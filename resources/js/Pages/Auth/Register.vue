@@ -6,8 +6,21 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Input from "@/Components/Input.vue";
 import InputPhone from "@/Components/InputPhone.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import { StockieIcon } from "@/Components/Icons/brands";
-import { onMounted } from "vue";
+import { EyeIcon, EyeOffIcon, StockieIcon } from "@/Components/Icons/brands";
+import { onMounted, ref } from "vue";
+import Button from "@/Components/Button.vue";
+import InputIconWrapper from "@/Components/InputIconWrapper.vue";
+
+const showPassword = ref(false);
+const showPassword2 = ref(false);
+
+const togglePasswordVisibility = () => {
+    showPassword.value = !showPassword.value;
+};
+
+const togglePasswordVisibilityConfirm = () => {
+    showPassword2.value = !showPassword2.value;
+}
 
 const form = useForm({
   full_name: "",
@@ -23,11 +36,6 @@ const submit = () => {
   });
 };
 
-onMounted(() => {
-  if (!form.value.phone.startsWith("+60")) {
-    form.value.phone = "+60";
-  }
-});
 </script>
 
 <template>
@@ -51,102 +59,133 @@ onMounted(() => {
         <Head title="Register" />
 
         <form @submit.prevent="submit">
-          <div>
-            <Label for="email" value="Email" />
+          <div class="flex flex-col gap-11" >
+            <div class="flex flex-col items-center gap-6">
+              <div class="space-y-1 w-full" >
+                <Label for="email" value="Email" />
 
-            <Input
-              id="email"
-              type="email"
-              class="mt-1 block w-full"
-              v-model="form.email"
-              required
-              autocomplete="username"
-              placeholder="Enter your email here"
-            />
+                <Input
+                  id="email"
+                  type="email"
+                  class="w-full"
+                  v-model="form.email"
+                  required
+                  autocomplete="username"
+                  placeholder="Enter your email here"
+                />
 
-            <InputError class="mt-2" :message="form.errors.email" />
-          </div>
+                <InputError class="mt-2" :message="form.errors.email" />
+              </div>
 
-          <div class="mt-4">
-            <Label for="phone" value="Phone No." />
+              <div class="space-y-1 w-full">
+                <Label for="phone" value="Phone No." />
 
-            <InputPhone
-              id="phone"
-              type="text"
-              class="mt-1 block w-full"
-              v-model="form.phone"
-              required
-              autofocus
-              autocomplete="phone"
-            />
+                <InputIconWrapper> 
 
-            <InputError class="mt-2" :message="form.errors.phone" />
-          </div>
+                  <template #icon>
+                    <span class="text-gray-700" >+60</span>
+                  </template>
 
-          <div class="mt-4">
-            <Label for="full_name" value="Full Name" />
+                  <Input
+                    id="phone"
+                    type="text"
+                    class="w-full"
+                    v-model="form.phone"
+                    withIcon
+                    required
+                    autofocus
+                    autocomplete="phone"
+                  />
+                </InputIconWrapper>
 
-            <Input
-              id="full_name"
-              type="text"
-              class="mt-1 block w-full"
-              v-model="form.full_name"
-              required
-              autofocus
-              autocomplete="full_name"
-              placeholder="Enter your full name here"
-            />
+                <InputError class="mt-2" :message="form.errors.phone" />
+              </div>
 
-            <InputError class="mt-2" :message="form.errors.full_name" />
-          </div>
+              <div class="space-y-1 w-full">
+                <Label for="full_name" value="Full Name" />
 
-          <div class="mt-4">
-            <Label for="password" value="Password" />
+                <Input
+                  id="full_name"
+                  type="text"
+                  class="w-full"
+                  v-model="form.full_name"
+                  required
+                  autofocus
+                  autocomplete="full_name"
+                  placeholder="Enter your full name here"
+                />
 
-            <Input
-              id="password"
-              type="password"
-              class="mt-1 block w-full"
-              v-model="form.password"
-              required
-              autocomplete="new-password"
-              placeholder="Enter your password here"
-            />
+                <InputError class="mt-2" :message="form.errors.full_name" />
+              </div>
 
-            <InputError class="mt-2" :message="form.errors.password" />
-          </div>
+              <div class="space-y-1 w-full">
+                <Label for="password" value="Password" />
+                <div class="relative">
+                  <Input
+                    id="password"
+                    :type="showPassword ? 'text' : 'password'"
+                    class="w-full"
+                    v-model="form.password"
+                    required
+                    autocomplete="new-password"
+                    placeholder="Enter your password here"
+                  />
+                  <div
+                      class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                      @click="togglePasswordVisibility"
+                  >
+                    <template v-if="showPassword">
+                        <EyeIcon aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                    </template>
+                    <template v-else>
+                        <EyeOffIcon aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                    </template>
+                  </div>
+                </div>
 
-          <div class="mt-4">
-            <Label for="password_confirmation" value="Confirm Password" />
+                <InputError class="mt-2" :message="form.errors.password" />
+              </div>
 
-            <Input
-              id="password_confirmation"
-              type="password"
-              class="mt-1 block w-full"
-              v-model="form.password_confirmation"
-              required
-              autocomplete="new-password"
-              placeholder="Enter your password here"
-            />
+              <div class="space-y-1 w-full">
+                <Label for="password_confirmation" value="Confirm Password" />
+                <div class="relative">
+                  <Input
+                    id="password_confirmation"
+                    :type="showPassword2 ? 'text' : 'password'"
+                    class="w-full"
+                    v-model="form.password_confirmation"
+                    required
+                    autocomplete="new-password"
+                    placeholder="Enter your password here"
+                  />
+                  <div
+                      class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                      @click="togglePasswordVisibilityConfirm"
+                  >
+                    <template v-if="showPassword2">
+                        <EyeIcon aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                    </template>
+                    <template v-else>
+                        <EyeOffIcon aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                    </template>
+                  </div>
+                
+                </div>
 
-            <InputError class="mt-2" :message="form.errors.password_confirmation" />
-          </div>
-
-          <div class="flex items-center justify-end mt-4">
-            <Link
-              :href="route('login')"
-              class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Already registered?
-            </Link>
-
-            <PrimaryButton
-              class="ms-4"
-              :class="{ 'opacity-25': form.processing }"
-              :disabled="form.processing"
-            >
-              Register
-            </PrimaryButton>
+                <InputError class="mt-2" :message="form.errors.password_confirmation" />
+              </div>
+            </div>
+            <div class="w-full">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  class=" w-full flex justify-center items-center"
+                  :class="{ 'opacity-25': form.processing }"
+                  :disabled="form.processing"
+                >
+                  Register
+                </Button>
+            </div>
           </div>
         </form>
       </div>

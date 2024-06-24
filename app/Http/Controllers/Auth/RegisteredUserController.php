@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,21 +44,40 @@ class RegisteredUserController extends Controller
 
         $verificationCode = rand(1000, 9999);
 
-        $user = Customer::create([
-            'full_name' => $request->full_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-            'verification_code' => $verificationCode,
-            'verification_code_expires_at' => Carbon::now()->addMinutes(10),
-        ]);
+        // $user = Customer::create([
+        //     'full_name' => $request->full_name,
+        //     'email' => $request->email,
+        //     'phone' => $request->phone,
+        //     'password' => Hash::make($request->password),
+        //     'verification_code' => $verificationCode,
+        //     'verification_code_expires_at' => Carbon::now()->addMinutes(10),
+        //     'ranking' => '0',
+        //     'point' => '0',
+        // ]);
 
         Mail::to($request->email)->send(new VerificationCodeMail($verificationCode));
 
-        event(new Registered($user));
+        Session::put('verification_code', $verificationCode);
+        Session::put('user_data', $request->only(['full_name', 'email', 'phone', 'password']));
 
-        Auth::login($user);
+        return redirect(route('verifyOtp'));
 
-        return redirect(route('dashboard', absolute: false));
+        // event(new Registered($user));
+
+        // Auth::login($user);
+
+        // return redirect(route('dashboard', absolute: false));
+    }
+
+    public function verifyOtp()
+    {
+        $verificationCode = Session::get('verification_code');
+        $userData = Session::get('user_data');
+
+        // Use the data as needed
+        return Inertia::render('Auth/VerifyOtp', [
+            'verificationCode' => $verificationCode,
+            'userData' => $userData,
+        ]);
     }
 }

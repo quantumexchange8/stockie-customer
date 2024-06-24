@@ -1,19 +1,57 @@
 <script setup>
 import { ArrowIcon, ArrowRedIcon, EditIcon, LogoutIcon } from "@/Components/Icons/brands";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
+import Modal from "@/Components/Modal.vue";
+import { onMounted, onUnmounted, ref } from "vue";
+import { LogoutPic } from "@/Components/Icons/logout";
+import Button from "@/Components/Button.vue";
+import Promotion from "@/Pages/Dashboard/Promotion.vue"
+import Points from "@/Pages/Dashboard/Points.vue"
+import { LastVisit, QRPhone, TierRank } from "@/Components/Icons/solid";
+
+const logoutModal = ref(false);
+
+const props = defineProps({
+  promotions: Array,
+})
+
+const openLogoutModal = () => {
+  logoutModal.value = true;
+};
+
+const closeModal = () => {
+  logoutModal.value = false;
+};
+
+const currentDate = ref('');
+const currentTime = ref('');
+
+const updateDateTime = () => {
+  const now = new Date();
+  const optionsDate = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  const optionsTime = { hour: '2-digit', minute: '2-digit', hour12: true };
+
+  currentDate.value = now.toLocaleDateString('en-GB', optionsDate);
+  currentTime.value = now.toLocaleTimeString('en-GB', optionsTime);
+};
+
+onMounted(() => {
+  updateDateTime();
+  const interval = setInterval(updateDateTime, 1000);
+
+  onUnmounted(() => {
+    clearInterval(interval);
+  });
+});
+
 </script>
 
 <template>
   <Head title="Dashboard" />
 
-  <!-- <AuthenticatedLayout> -->
-  <!-- <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboards</h2>
-    </template> -->
-
   <div class="flex justify-center w-full">
-    <div class="max-w-md w-full pt-[52px] px-4 flex flex-col min-h-screen">
+    <div class="max-w-md w-full p-4 flex flex-col min-h-screen">
       <!-- header -->
       <div class="w-full flex justify-between gap-4">
         <div class="flex flex-col gap-5">
@@ -24,7 +62,7 @@ import { Head } from "@inertiajs/vue3";
             </div>
           </div>
           <div>
-            <LogoutIcon />
+            <LogoutIcon @click="openLogoutModal" />
           </div>
         </div>
         <div></div>
@@ -34,49 +72,46 @@ import { Head } from "@inertiajs/vue3";
       <div
         class="w-full bg-white border border-primary-200 rounded-[5px] p-3 flex flex-col gap-3"
       >
-        <div class="w-full border border-primary-100 rounded-[5px]"></div>
+        <div class="w-full border border-primary-100 rounded-[5px]" >
+          <Link :href="route('promotion.promotion')">
+            <Promotion :promotions="promotions"/>
+          </Link>
+          
+        </div>
         <div class="w-full flex items-center gap-3">
-          <div
-            class="py-3 px-4 bg-primary-900 flex flex-col gap-[10px] border border-primary-100 rounded-[5px] w-full h-[130px]"
-          >
-            <div class="w-full flex items-center justify-between">
-              <div class="text-primary-25 text-base font-semibold">Points</div>
-              <div>
-                <ArrowIcon class="text-[#FFF9F9]" />
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="text-[28px] leading-tight font-semibold text-white">
-                {{ $page.props.auth.user.point }}
-              </div>
-              <div class="text-base text-white">pts</div>
-            </div>
+          <div class="py-3 px-4 bg-primary-900 border border-primary-100 rounded-[5px] w-full h-[130px] relative">
+            <Points />
           </div>
-          <div
-            class="py-3 px-4 bg-white flex flex-col gap-[10px] border border-primary-100 rounded-[5px] w-full h-[130px]"
-          >
-            <div class="w-full flex items-center justify-between">
-              <div class="text-primary-900 text-base font-semibold">Tier</div>
-              <div>
-                <ArrowRedIcon />
+          <div class="py-3 px-4 bg-white border border-primary-100 rounded-[5px] w-full h-[130px] relative">
+            <TierRank class="absolute bottom-0 right-0" />
+            <div class="flex flex-col gap-[10px]" > 
+              <div class="w-full flex items-center justify-between">
+                <div class="text-primary-900 text-base font-semibold">Tier</div>
+                <div>
+                  <ArrowRedIcon />
+                </div>
+              </div>
+              <div class="flex flex-col gap-1">
+                <div></div>
+                <div class="text-xl font-semibold text-primary-900">VVIP</div>
               </div>
             </div>
-
-            <div class="flex flex-col gap-1">
-              <div></div>
-              <div class="text-xl font-semibold text-primary-900">VVIP</div>
-            </div>
+            
           </div>
         </div>
         <div class="w-full flex items-center gap-3">
-          <div
-            class="py-3 px-4 bg-white flex flex-col gap-[10px] border border-primary-100 rounded-[5px] w-full"
-          >
+          <div class="py-3 px-4 bg-primary-100 flex flex-col gap-[10px] border border-primary-100 rounded-[5px] w-full">
             <div class="flex items-center justify-between">
               <div class="text-base font-semibold text-primary-900">Account</div>
-              <div>
+              <Button 
+                variant="transparent"
+                pill
+                class="p-0 focus:ring-0"
+                size="lgNp"
+                :href="'/profile'"
+              > 
                 <EditIcon />
-              </div>
+              </Button>
             </div>
 
             <div class="flex flex-col items-start gap-1">
@@ -105,21 +140,36 @@ import { Head } from "@inertiajs/vue3";
           </div>
         </div>
         <div class="w-full flex items-center gap-3">
-          <div
-            class="py-3 px-4 bg-white flex flex-col gap-[10px] border border-primary-100 rounded-[5px] h-[163px]"
-          >
-            <div class="text-primary-900 text-base font-semibold">My QR</div>
-            <div class="text-gray-900 text-xss font-medium leading-tight">
-              Tap to show your code
+          <div class="py-3 px-4 bg-white border border-primary-100 rounded-[5px] h-[163px] relative">
+            <QRPhone class=" absolute bottom-0 right-0" />
+            <div class="flex flex-col gap-[10px]">
+              <div class="text-primary-900 text-base font-semibold">My QR</div>
+              <div class="text-gray-900 text-xss font-medium leading-tight">
+                Tap to show your code
+              </div>
             </div>
           </div>
-          <div
-            class="py-3 px-4 bg-primary-900 flex flex-col gap-[10px] border border-primary-100 rounded-[5px] w-full h-[163px]"
-          >
-            <div class="flex justify-between items-center">
-              <div class="text-primary-25 text-base font-semibold">Last Visit</div>
-              <div>
-                <ArrowIcon class="text-[#FFF9F9]" />
+          <div class="py-3 px-4 bg-primary-900 border border-primary-100 rounded-[5px] w-full h-[163px] relative flex flex-col ">
+            <LastVisit class=" absolute bottom-0 right-0" />
+            <div class="flex flex-col gap-[10px] h-full " >
+              <div class="flex justify-between items-center">
+                <div class="text-primary-25 text-base font-semibold">Last Visit</div>
+                <div>
+                  <ArrowIcon class="text-[#FFF9F9]" />
+                </div>
+              </div>
+              <div class="flex flex-col justify-end items-start h-full" >
+                <div class="flex flex-col gap-1" >
+                  <div class=" text-primary-200 text-xs font-medium" >
+                    {{ currentDate }}
+                  </div>
+                  <div class=" text-primary-200 text-xs font-medium" >
+                    {{ currentTime }}
+                  </div>
+                  <div class=" text-3xl text-white font-semibold leading-tight" >
+                    RM 123.00
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -127,5 +177,26 @@ import { Head } from "@inertiajs/vue3";
       </div>
     </div>
   </div>
-  <!-- </AuthenticatedLayout> -->
+
+  <Modal :show="logoutModal" max-width="sm" @close="closeModal">
+    <div class="flex flex-col gap-9 p-6 w-[283px]">
+      <LogoutPic/>
+      <div class="flex flex-col items-center">
+        <div class="text-primary-900 text-xl font-medium">You're leaving...</div>
+        <div class="text-gray-900 text-sm font-medium leading-tight">Are you sure you want to log out this account?</div>
+      </div>
+      <div class="flex flex-col gap-3" >
+          <Link :href="route('logout')" method="post" as="button">
+            <Button variant="primary" size="lg" class="w-full">
+              <span class="text-center text-white text-base font-medium w-full" >Yes, log me out</span>
+            </Button>
+          </Link>
+          
+          <Button variant="tertiary" size="lg" type="button" @click="closeModal">
+            <span class="text-center text-primary-900 text-base font-medium w-full" >Cancel</span>
+          </Button>
+      </div>
+    </div>
+  </Modal>
+
 </template>

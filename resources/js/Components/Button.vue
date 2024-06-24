@@ -7,7 +7,7 @@ const props = defineProps({
         type: String,
         default: 'primary',
         validator(value) {
-            return ['primary', 'secondary', 'tertiary', 'danger'].includes(value)
+            return ['primary', 'secondary', 'tertiary', 'danger', 'transparent'].includes(value)
         },
     },
     type: {
@@ -18,7 +18,7 @@ const props = defineProps({
         type: String,
         default: 'base',
         validator(value) {
-            return ['sm', 'base', 'lg'].includes(value)
+            return ['sm', 'base', 'lg', 'lgNp'].includes(value)
         },
     },
     squared: {
@@ -67,6 +67,7 @@ const variantClasses = (variant) => ({
     'bg-transparent border border-primary-800 rounded-[5px] text-primary-900 focus:ring-green-500 shadow-lg': variant === 'tertiary',
     'bg-primary-600 text-white hover:bg-primary-500 focus:ring-red-500 shadow-lg': variant === 'danger',
     'bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-500 shadow-lg': variant === 'warning',
+    'bg-transparent rounded-full shadow-lg': variant === 'transparent',
 })
 
 const classes = computed(() => [
@@ -76,6 +77,7 @@ const classes = computed(() => [
                 'p-1.5': size == 'sm',
                 'p-2': size == 'base',
                 'p-3': size == 'lg',
+                'p-1': size == 'lgNp',
             }
         : {
                 'px-2.5 py-1.5 text-sm': size == 'sm',

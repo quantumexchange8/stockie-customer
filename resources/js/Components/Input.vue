@@ -30,7 +30,7 @@ onMounted(() => {
 <template>
   <input
     :class="[
-      'py-3 border-gray-300 rounded-[5px] bg-white',
+      'py-3 border-gray-300 rounded-[5px] bg-white h-11',
       'focus:border-primary-300 focus:ring-0',
       'hover:border-primary-100',
       'text-base text-gray-700 placeholder:text-gray-200 placeholder:text-base',

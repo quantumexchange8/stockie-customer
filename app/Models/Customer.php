@@ -21,6 +21,8 @@ class Customer extends Authenticatable
         'password',
         'verification_code',
         'verification_code_expires_at',
+        'ranking',
+        'point',
     ];
 
     protected $hidden = [
