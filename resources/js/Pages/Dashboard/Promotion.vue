@@ -1,12 +1,27 @@
 <script setup>
 import { NoPromotion, NoPromotion2 } from '@/Components/Icons/nodata';
+import { onMounted, ref } from 'vue';
+import Galleria from 'primevue/galleria';
 
+const promotions = ref([]);
 
-const props = defineProps({
-    promotions: Array,
-})
+const fetchPromotions = async () => {
+  try {
+    const response = await fetch('/promotion/getPromotionImage');
+    promotions.value = await response.json();
+  } catch (error) {
+    console.error('Error fetching promotions:', error);
+  }
+};
 
-console.log(props.promotions)
+// const props = defineProps({
+//     promotions: Array,
+// })
+
+onMounted(() => {
+    fetchPromotions();
+});
+
 </script>
 
 <template>
@@ -23,8 +38,24 @@ console.log(props.promotions)
         <NoPromotion2/>
     </div>
     <div v-else class="flex justify-center items-center p-2">
-        <!-- {{ promotions }} -->
-        <img src="https://www.its.ac.id/tmesin/wp-content/uploads/sites/22/2022/07/no-image.png" alt="">
+        <Galleria
+            :value="promotions"
+            :responsiveOptions="responsiveOptions"
+            :numVisible="5"
+            containerStyle="max-width: 640px"
+            :showThumbnails="false"
+            :circular="true"
+            :autoPlay="true"
+            :transitionInterval="5000"
+        >
+            <template #item="slotProps">
+                <img
+                :src="slotProps.item.image"
+                :alt="slotProps.item.name || 'Promotion Image'"
+                style="width: 100%; max-height: 160px; display: block"
+                />
+            </template>
+        </Galleria>
     </div>
 
 </template>

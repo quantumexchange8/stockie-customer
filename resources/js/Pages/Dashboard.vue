@@ -14,6 +14,7 @@ const logoutModal = ref(false);
 
 const props = defineProps({
   promotions: Array,
+  rank: Array,
 })
 
 const openLogoutModal = () => {
@@ -61,7 +62,7 @@ onMounted(() => {
               {{ $page.props.auth.user.full_name }}
             </div>
           </div>
-          <div>
+          <div class="py-4">
             <LogoutIcon @click="openLogoutModal" />
           </div>
         </div>
@@ -83,19 +84,23 @@ onMounted(() => {
             <Points />
           </div>
           <div class="py-3 px-4 bg-white border border-primary-100 rounded-[5px] w-full h-[130px] relative">
-            <TierRank class="absolute bottom-0 right-0" />
-            <div class="flex flex-col gap-[10px]" > 
-              <div class="w-full flex items-center justify-between">
-                <div class="text-primary-900 text-base font-semibold">Tier</div>
-                <div>
-                  <ArrowRedIcon />
+            <Link :href="route('ranking')">
+              <TierRank class="absolute bottom-0 right-0" />
+              <div class="flex flex-col gap-[10px]" > 
+                <div class="w-full flex items-center justify-between">
+                  <div class="text-primary-900 text-base font-semibold">Tier</div>
+                  <div>
+                    <ArrowRedIcon />
+                  </div>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <div>
+                  <img :src="rank.image" alt="">
+                  </div>
+                  <div class="text-xl font-semibold text-primary-900">{{rank.name}}</div>
                 </div>
               </div>
-              <div class="flex flex-col gap-1">
-                <div></div>
-                <div class="text-xl font-semibold text-primary-900">VVIP</div>
-              </div>
-            </div>
+            </Link>
             
           </div>
         </div>
@@ -140,15 +145,17 @@ onMounted(() => {
           </div>
         </div>
         <div class="w-full flex items-center gap-3">
-          <div class="py-3 px-4 bg-white border border-primary-100 rounded-[5px] h-[163px] relative">
-            <QRPhone class=" absolute bottom-0 right-0" />
-            <div class="flex flex-col gap-[10px]">
-              <div class="text-primary-900 text-base font-semibold">My QR</div>
-              <div class="text-gray-900 text-xss font-medium leading-tight">
-                Tap to show your code
+          <Link :href="route('qr')">
+            <div class="py-3 px-4 bg-white border border-primary-100 rounded-[5px] h-[163px] relative" >
+              <QRPhone class=" absolute bottom-0 right-0" />
+              <div class="flex flex-col gap-[10px]">
+                <div class="text-primary-900 text-base font-semibold">My QR</div>
+                <div class="text-gray-900 text-xss font-medium leading-tight">
+                  Tap to show your code
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
           <div class="py-3 px-4 bg-primary-900 border border-primary-100 rounded-[5px] w-full h-[163px] relative flex flex-col ">
             <LastVisit class=" absolute bottom-0 right-0" />
             <div class="flex flex-col gap-[10px] h-full " >
@@ -179,22 +186,24 @@ onMounted(() => {
   </div>
 
   <Modal :show="logoutModal" max-width="sm" @close="closeModal">
-    <div class="flex flex-col gap-9 p-6 w-[283px]">
-      <LogoutPic/>
-      <div class="flex flex-col items-center">
-        <div class="text-primary-900 text-xl font-medium">You're leaving...</div>
-        <div class="text-gray-900 text-sm font-medium leading-tight">Are you sure you want to log out this account?</div>
-      </div>
-      <div class="flex flex-col gap-3" >
-          <Link :href="route('logout')" method="post" as="button">
-            <Button variant="primary" size="lg" class="w-full">
-              <span class="text-center text-white text-base font-medium w-full" >Yes, log me out</span>
+    <div class="flex flex-col gap-9 pt-6" >
+      <LogoutPic />
+      <div class="flex flex-col gap-9 px-6 pb-6 w-[283px]">
+        <div class="flex flex-col items-center">
+          <div class="text-primary-900 text-xl font-medium">You're leaving...</div>
+          <div class="text-gray-900 text-sm font-medium leading-tight">Are you sure you want to log out this account?</div>
+        </div>
+        <div class="flex flex-col gap-3" >
+            <Link :href="route('logout')" method="post" as="button">
+              <Button variant="primary" size="lg" class="w-full">
+                <span class="text-center text-white text-base font-medium w-full" >Yes, log me out</span>
+              </Button>
+            </Link>
+            
+            <Button variant="tertiary" size="lg" type="button" @click="closeModal">
+              <span class="text-center text-primary-900 text-base font-medium w-full" >Cancel</span>
             </Button>
-          </Link>
-          
-          <Button variant="tertiary" size="lg" type="button" @click="closeModal">
-            <span class="text-center text-primary-900 text-base font-medium w-full" >Cancel</span>
-          </Button>
+        </div>
       </div>
     </div>
   </Modal>

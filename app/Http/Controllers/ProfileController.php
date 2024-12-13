@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\File;
 
 class ProfileController extends Controller
 {
@@ -59,5 +60,30 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function profileImage()
+    {
+
+        return Inertia::render('SelectProfile');
+    }
+
+    public function getProfileImage()
+    {
+
+        $files = File::files(public_path('assets/profile_image'));
+        $images = array_map(function ($file) {
+            return asset('assets/profile_image/' . $file->getFilename());
+        }, $files);
+    
+        return response()->json($images);
+    }
+
+    public function saveimage(Request $request)
+    {
+
+        // dd($request->all());
+
+        return redirect()->back();
     }
 }

@@ -40,7 +40,7 @@ const props = defineProps({
                     <div v-for="promotion in promotions" >
                         <div class="flex flex-col gap-3 p-3" >
                             <div>
-                                <img src='https://www.its.ac.id/tmesin/wp-content/uploads/sites/22/2022/07/no-image.png' alt="" class=" rounded-lg" >
+                                <img :src="promotion.image" alt="" class=" rounded-lg" >
                             </div>
                             <div class="flex justify-between">
                                 <div>{{ promotion.title }}</div>

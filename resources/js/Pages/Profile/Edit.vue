@@ -43,8 +43,8 @@ const form = useForm({
                 <div class="text-white text-base font-semibold leading-tight flex items-center" >Account Details</div>
                 <div class="w-6 h-6"></div>
             </div>
-            <div class="bg-white w-full px-8 pt-[18px] py-9 h-full flex flex-col items-center">
-                <div>
+            <div class="bg-white w-full px-8 pt-[18px] py-9 h-full flex flex-col gap-9 items-center">
+                <div class=" w-[140px] h-[140px] rounded-full">
                     
                 </div>
 

@@ -15,6 +15,9 @@ export default {
             fontFamily: {
                 sans: ['Lexend', ...defaultTheme.fontFamily.sans],
             },
+            backgroundImage: {
+                'pointbg': "url('/assets/image/pointbg.svg')",
+            },
             fontSize: {
                 'xss': ['10px', {
                     letterSpacing: '-0.2px',

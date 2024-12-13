@@ -6,7 +6,10 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PointController;
 use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\QRController;
+use App\Http\Controllers\RankingController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -19,8 +22,10 @@ Route::get('/', function () {
 });
 
 Route::get('verifyOtp', [RegisteredUserController::class, 'verifyOtp'])->name('verifyOtp');
+Route::post('validOtp', [RegisteredUserController::class, 'validOtp'])->name('validOtp');
 
 Route::middleware('auth')->group(function () {
+    
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     /**
@@ -30,12 +35,48 @@ Route::middleware('auth')->group(function () {
      */
      Route::prefix('promotion')->group(function () {
         Route::get('/promotion', [PromotionController::class, 'promotion'])->name('promotion.promotion');
+        Route::get('/getPromotionImage', [PromotionController::class, 'getPromotionImage'])->name('promotion.getPromotionImage');
         Route::get('/promotionDetails/{id}', [PromotionController::class, 'promotionDetails'])->name('promotion.promotionDetails');
     });
+
+    // QR CODE
+    Route::get('/qr', [QRController::class, 'qr'])->name('qr');
+
+    /**
+     * ==============================
+     *        Point
+     * ==============================
+     */
+    Route::prefix('point')->group(function () {
+        Route::get('/point', [PointController::class, 'point'])->name('point.point');
+        Route::get('/getRedemItem', [PointController::class, 'getRedemItem'])->name('point.getRedemItem');
+        Route::get('/view-history', [PointController::class, 'viewHistory'])->name('point.view-history');
+        Route::get('/getPointHistory', [PointController::class, 'getPointHistory'])->name('point.getPointHistory');
+    });
+
+    /**
+     * ==============================
+     *        Profile
+     * ==============================
+     */
+    Route::get('/ranking', [RankingController::class, 'ranking'])->name('ranking');
+    Route::get('/getReward', [RankingController::class, 'getReward'])->name('getReward');
+    
+
+    /**
+     * ==============================
+     *        Profile
+     * ==============================
+     */
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/profile_image', [ProfileController::class, 'profileImage'])->name('profile.profile_image');
+    Route::get('/getProfileImage', [ProfileController::class, 'getProfileImage'])->name('profile.getProfileImage');
+    Route::post('/save-image', [ProfileController::class, 'saveimage'])->name('profile.save-image');
+
 });
 
 Route::get('/components/buttons', function () {

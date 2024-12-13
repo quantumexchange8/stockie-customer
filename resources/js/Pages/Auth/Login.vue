@@ -78,9 +78,8 @@ const submit = () => {
                     <Input
                       id="email"
                       type="email"
-                      class="mt-1 block w-full"
+                      :class="form.errors.email ? 'border border-primary-500 dark:border-error-500 mt-1 block w-full' : 'mt-1 block w-full'"
                       v-model="form.email"
-                      required
                       autofocus
                       autocomplete="username"
                       placeholder="Enter your email here"
@@ -95,9 +94,8 @@ const submit = () => {
                     <Input
                       id="password"
                       type="password"
-                      class="mt-1 block w-full"
+                      :class="form.errors.email ? 'border border-primary-500 dark:border-error-500 mt-1 block w-full' : 'mt-1 block w-full'"
                       v-model="form.password"
-                      required
                       autocomplete="current-password"
                       placeholder="Enter your password here"
                     />

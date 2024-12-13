@@ -11,7 +11,11 @@ class PromotionController extends Controller
     public function promotion()
     {
 
-        $promotions = ConfigPromotion::get();
+        $promotions = ConfigPromotion::where('status', 'Active')->get();
+
+        $promotions->each(function($promotion){
+            $promotion->image = $promotion->getFirstMediaUrl('promotion');
+        });
 
         return Inertia::render('Promotion/Promotion', [
             'promotions' => $promotions,
@@ -23,8 +27,22 @@ class PromotionController extends Controller
 
         $promotion = ConfigPromotion::find($id);
 
+        $promotion->image = $promotion->getFirstMediaUrl('promotion');
+
         return Inertia::render('Promotion/Partials/PromotionDetails', [
-            'promotion' => $promotion
+            'promotion' => $promotion,
         ]);
+    }
+
+    public function getPromotionImage()
+    {
+
+        $promotions = ConfigPromotion::where('status', 'Active')->get();
+
+        $promotions->each(function($promotion){
+            $promotion->image = $promotion->getFirstMediaUrl('promotion');
+        });
+
+        return response()->json($promotions);
     }
 }

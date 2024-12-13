@@ -10,6 +10,9 @@ class Customer extends Authenticatable
 
 {
 
+    // first time login status = 0
+    // else status = 1
+
     use Notifiable;
 
     protected $table = 'customers';
@@ -23,6 +26,8 @@ class Customer extends Authenticatable
         'verification_code_expires_at',
         'ranking',
         'point',
+        'uuid',
+        'first_login',
     ];
 
     protected $hidden = [

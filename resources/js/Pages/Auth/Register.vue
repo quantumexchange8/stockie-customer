@@ -42,11 +42,13 @@ const submit = () => {
   <GuestLayout>
     <div class="w-full flex flex-col items-center gap-9">
       <div class="w-full flex flex-col gap-[10px] items-start px-6 pt-10">
-        <div
-          class="bg-white w-[62px] h-[62px] p-3 rounded-xl shadow-[0.484px_0.727px_0.969px_0.727px_rgba(0,0,0,0.3)]"
-        >
-          <StockieIcon class="drop-shadow-[1.653px_1.24px_2.191px_rgba(0,0,0,0.30)]" />
-        </div>
+        <Link :href="route('login')">
+          <div
+            class="bg-white w-[62px] h-[62px] p-3 rounded-xl shadow-[0.484px_0.727px_0.969px_0.727px_rgba(0,0,0,0.3)]"
+          >
+            <StockieIcon class="drop-shadow-[1.653px_1.24px_2.191px_rgba(0,0,0,0.30)]" />
+          </div>
+        </Link>
         <div class="w-[201px] flex flex-col gap-1 items-start">
           <div class="text-xl text-primary-900 font-black leading-tight">stockie</div>
           <div class="text-xs text-gray-900 font-medium leading-tight">
