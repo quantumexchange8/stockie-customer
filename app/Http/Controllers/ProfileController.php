@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -70,20 +72,31 @@ class ProfileController extends Controller
 
     public function getProfileImage()
     {
-
         $files = File::files(public_path('assets/profile_image'));
         $images = array_map(function ($file) {
-            return asset('assets/profile_image/' . $file->getFilename());
+            return [
+                'url' => asset('assets/profile_image/' . $file->getFilename()),
+                'name' => $file->getFilename(),
+            ];
         }, $files);
-    
+
         return response()->json($images);
     }
 
     public function saveimage(Request $request)
     {
+        $request->validate([
+            'image' => 'required|file|mimes:jpg,jpeg,png|max:2048', // 2MB limit
+        ]);
 
-        // dd($request->all());
+        $auth = Auth::user();
 
-        return redirect()->back();
+        $user = Customer::find($auth->id);
+
+        if($request->hasfile('image')) {
+            $user->addMedia($request->image)->toMediaCollection('customer');
+        }
+
+        return redirect()->route('dashboard');
     }
 }

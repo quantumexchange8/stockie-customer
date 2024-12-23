@@ -61,7 +61,9 @@ const props = defineProps({
                                 <div v-if="reward.ranking_reward.reward_type === 'Discount (Amount)'">RM {{ reward.ranking_reward.discount }}</div>
                                 <div v-if="reward.ranking_reward.reward_type === 'Discount (Percentage)'"> {{ reward.ranking_reward.discount }} %</div>
                                 <div v-if="reward.ranking_reward.reward_type === 'Free Item'"> Free Item</div>
-                                <div></div>
+                                <div>
+                                
+                                </div>
                             </div>
                         </div>
                     </div>

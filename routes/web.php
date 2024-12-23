@@ -6,6 +6,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KeepController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PointController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\QRController;
@@ -53,6 +55,24 @@ Route::middleware('auth')->group(function () {
         Route::get('/view-history', [PointController::class, 'viewHistory'])->name('point.view-history');
         Route::get('/getPointHistory', [PointController::class, 'getPointHistory'])->name('point.getPointHistory');
     });
+
+    /**
+     * ==============================
+     *        Keep
+     * ==============================
+     */
+    Route::get('/keep_listing', [KeepController::class, 'keepListing'])->name('keep_listing');
+    Route::get('/keepHistory', [KeepController::class, 'keepHistory'])->name('keepHistory');
+    Route::get('/getKeepHistory', [KeepController::class, 'getKeepHistory'])->name('getKeepHistory');
+    
+
+    /**
+     * ==============================
+     *        Order History
+     * ==============================
+     */
+    Route::get('/order_listing', [OrderController::class, 'orderListing'])->name('order_listing');
+    Route::get('/getOrderHistory', [OrderController::class, 'getOrderHistory'])->name('getOrderHistory');
 
     /**
      * ==============================

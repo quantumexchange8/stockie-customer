@@ -17,6 +17,7 @@ export default {
             },
             backgroundImage: {
                 'pointbg': "url('/assets/image/pointbg.svg')",
+                'keepbg': "url('/assets/image/keepbg.svg')",
             },
             fontSize: {
                 'xss': ['10px', {

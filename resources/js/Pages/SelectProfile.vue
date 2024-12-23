@@ -7,7 +7,11 @@ import { CheckIcon } from '@/Components/Icons/solid';
 
 const profileImages = ref([]);
 const selectedImage = ref(null);
+const form = useForm({
+  image: null, // Store the file object here
+});
 
+// Fetch profile images
 const fetchProfileImages = async () => {
   try {
     const response = await fetch('/getProfileImage');
@@ -17,35 +21,33 @@ const fetchProfileImages = async () => {
   }
 };
 
-// Function to handle image selection
-const selectFile = (image) => {
-  selectedImage.value = image;
+// Handle image selection
+const selectFile = async (image) => {
+  try {
+    // Fetch the actual file from the URL
+    const response = await fetch(image.url);
+    const blob = await response.blob();
+    const file = new File([blob], image.name, { type: blob.type });
 
-  console.log('w', selectedImage.value)
+    selectedImage.value = file; // Store the file object
+    form.image = file; // Update the form data
+  } catch (error) {
+    console.error('Error converting image to file:', error);
+  }
 };
 
-
-// Submit selected image to the controller
-const form = useForm({
-  image: null,
-});
-
+// Submit the form with the selected image file
 const submitImage = () => {
   if (selectedImage.value) {
     const formData = new FormData();
-    formData.append('image', selectedImage.value);
-
-    // Use Inertia's visit method to submit the form
+    formData.append('image', selectedImage.value); // Add the file object
     form.post('/save-image', {
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+      data: formData, // Use FormData for submission
       onSuccess: () => {
-        alert('Profile image updated successfully!');
+        
       },
       onError: (error) => {
-        console.error('Error submitting image:', error);
+        
       },
     });
   } else {
@@ -56,7 +58,6 @@ const submitImage = () => {
 onMounted(() => {
   fetchProfileImages();
 });
-
 </script>
 
 <template>
@@ -77,15 +78,15 @@ onMounted(() => {
                     class="w-[120px] h-[120px] flex justify-center rounded-full cursor-pointer relative"
                     @click="selectFile(image)"
                 >
-                    <img :src="image" alt="Profile Image" 
+                    <img :src="image.url" alt="Profile Image" 
                         class="w-[120px] h-[120px] rounded-full "
                         :class="{
-                            ' border-2 border-primary-900 ': selectedImage === image,
-                            ' border-none border-black': selectedImage !== image,
+                            'border-2 border-primary-900': selectedImage?.name === image.name, // Compare by name
+                            'border-none border-black': selectedImage?.name !== image.name,
                         }"
                     />
 
-                    <div v-if="selectedImage === image" class="absolute top-0 right-1 rounded-full w-7 h-7 p-1.5 bg-primary-900">
+                    <div v-if="selectedImage?.name === image.name" class="absolute top-0 right-1 rounded-full w-7 h-7 p-1.5 bg-primary-900">
                         <CheckIcon />
                     </div>
                 </div>

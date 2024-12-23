@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Customer extends Authenticatable
+class Customer extends Authenticatable implements HasMedia
 
 {
 
     // first time login status = 0
     // else status = 1
 
-    use Notifiable;
+    use Notifiable, InteractsWithMedia;
 
     protected $table = 'customers';
 

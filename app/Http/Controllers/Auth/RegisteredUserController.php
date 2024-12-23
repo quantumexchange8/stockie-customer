@@ -113,12 +113,12 @@ class RegisteredUserController extends Controller
 
             return redirect(route('dashboard', absolute: false));
 
-            // if ($user->first_login === '0') {
+            if ($user->first_login === '0') {
 
-            //     return redirect(route('profile.profile_image', absolute: false));
-            // } else {
-            //     return redirect(route('dashboard', absolute: false));
-            // }
+                return redirect(route('profile.profile_image', absolute: false));
+            } else {
+                return redirect(route('dashboard', absolute: false));
+            }
         }
         
     }
