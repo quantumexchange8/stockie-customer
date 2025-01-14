@@ -52,7 +52,7 @@ class KeepItem extends Model
      */
     public function keepHistories(): HasMany
     {
-        return $this->hasMany(KeepHistory::class,'keep_item_id');
+        return $this->hasMany(KeepHistory::class,'keep_item_id')->where('status', 'Served');
     }
 
     /**

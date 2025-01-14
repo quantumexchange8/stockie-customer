@@ -18,8 +18,16 @@ class KeepController extends Controller
 
         $keeps = KeepItem::where('customer_id', $user->id)
                 ->where('status', 'keep')
-                ->with(['orderItemSubitem.productItem.product:id,product_name'])
+                ->with(['orderItemSubitem.productItem.product:id,product_name', 'waiter:id,name'])
                 ->get();
+
+        $keeps->each(function ($keep) {
+            $product = $keep->orderItemSubitem->productItem->product;
+            if ($product) {
+                $product->product_image_url = $product->getFirstMediaUrl('product');
+            }
+        });
+        
         $countKeep = KeepItem::where('customer_id', $user->id)->where('status', 'keep')->count();
         
 
@@ -42,8 +50,17 @@ class KeepController extends Controller
         $user = Auth::user();
 
         $keeps = KeepItem::where('customer_id', $user->id)
-                ->with(['orderItemSubitem.productItem.product:id,product_name'])
+                ->with(['orderItemSubitem.productItem.product' => function ($query) {
+                    $query->select('id', 'product_name')->with('media'); 
+                }, 'keepHistories:keep_item_id,qty,cm,keep_date,status,remark'])
                 ->get();
+
+        $keeps->each(function ($keep) {
+            $product = $keep->orderItemSubitem->productItem->product;
+            if ($product) {
+                $product->product_image_url = $product->getFirstMediaUrl('product');
+            }
+        });
 
         return response()->json($keeps);
 

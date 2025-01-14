@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/getUserData', [ProfileController::class, 'getUserData'])->name('profile.getUserData');
 
     Route::get('/profile_image', [ProfileController::class, 'profileImage'])->name('profile.profile_image');
     Route::get('/getProfileImage', [ProfileController::class, 'getProfileImage'])->name('profile.getProfileImage');

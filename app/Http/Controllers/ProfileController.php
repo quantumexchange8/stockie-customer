@@ -99,4 +99,12 @@ class ProfileController extends Controller
 
         return redirect()->route('dashboard');
     }
+    
+    public function getUserData()
+    {
+
+        $users = Customer::where('id', Auth::user()->id)->first();
+
+        return response()->json($users);
+    }
 }

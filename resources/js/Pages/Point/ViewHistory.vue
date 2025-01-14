@@ -104,9 +104,60 @@ const { formatAmountWithoutDecimals, formatDateTime } = transactionFormat();
                                 Used
                             </button>
                         </Tab>
+                        <Tab
+                            as="template"
+                            v-slot="{ selected }"
+                        >
+                            <button
+                                @click="selectedTab = 'Adjustment'"
+                                :class="[
+                                'w-full py-3 text-sm font-medium',
+                                ' focus:outline-none ',
+                                selected
+                                    ? 'border-b border-primary-900 text-primary-900'
+                                    : 'text-gray-200 hover:bg-white/[0.12] hover:text-white',
+                                ]"
+                            >
+                                Adjusted
+                            </button>
+                        </Tab>
                     </TabList>
 
                     <TabPanels class="mt-2">
+                        <TabPanel
+                            :class="[
+                                'rounded-xl bg-white p-3',
+                                'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                            ]"
+                        >
+                            <div class="p-1">
+                                <div v-for="pointLog in filteredPointHistory" class="flex flex-col">
+                                    <div class="flex items-center justify-between py-2">
+                                        <div>
+                                            <div>
+                                                <!-- <div v-if="pointLog.type === 'Earned'">
+                                                
+                                                </div>
+                                                <div v-if="pointLog.type === 'Used'"></div> -->
+                                            </div>
+                                            <div class="flex flex-col ">
+                                                <div v-if="pointLog.type === 'Earned'" class="text-gray-900 font-medium">
+                                                    Order #{{ pointLog.payment.order.order_no }}
+                                                </div>
+                                                <div v-if="pointLog.type === 'Used'" class="text-gray-900 font-medium">
+                                                    {{ pointLog.qty }} x {{ pointLog.product.product_name }}
+                                                </div>
+                                                <div class="text-gray-400 text-xss">{{ formatDateTime(pointLog.created_at) }}</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <span v-if="pointLog.type === 'Earned'" class="text-green-700 font-semibold">+ {{ pointLog.amount }} pts</span>
+                                            <span v-if="pointLog.type === 'Used'" class="text-primary-700 font-semibold">- {{ pointLog.amount }} pts</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </TabPanel>
                         <TabPanel
                             :class="[
                                 'rounded-xl bg-white p-3',

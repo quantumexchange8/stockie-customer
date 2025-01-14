@@ -18,7 +18,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(PrimeVue, {
-                unstyled: true,
+                theme: 'none'
                 // pt: preset,
             })
             .mount(el);
