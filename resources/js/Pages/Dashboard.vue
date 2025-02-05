@@ -87,31 +87,34 @@ const { formatDate, formatTime  } = transactionFormat();
           </Link>
           
         </div>
-        <div class="w-full flex items-center gap-3">
-          <div class="py-3 px-4 bg-primary-900 border border-primary-100 rounded-[5px] w-full h-[130px] relative">
-            <Points />
-          </div>
-          <div class="py-3 px-4 bg-white border border-primary-100 rounded-[5px] w-full h-[130px] relative">
-            <Link :href="route('ranking')">
-              <TierRank class="absolute bottom-0 right-0" />
-              <div class="flex flex-col gap-[10px]" > 
-                <div class="w-full flex items-center justify-between">
-                  <div class="text-primary-900 text-base font-semibold">Tier</div>
-                  <div>
-                    <ArrowRedIcon />
+        <Link :href="route('point.point')">
+          <div class="w-full flex items-center gap-3">
+            <div class="py-3 px-4 bg-primary-900 border border-primary-100 rounded-[5px] w-full h-[130px] relative">
+              <Points />
+            </div>
+            <div class="py-3 px-4 bg-white border border-primary-100 rounded-[5px] w-full h-[130px] relative">
+              <Link :href="route('ranking')">
+                <TierRank class="absolute bottom-0 right-0" />
+                <div class="flex flex-col gap-[10px]" > 
+                  <div class="w-full flex items-center justify-between">
+                    <div class="text-primary-900 text-base font-semibold">Tier</div>
+                    <div>
+                      <ArrowRedIcon />
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <div>
+                    <img :src="rank.image" alt="">
+                    </div>
+                    <div class="text-xl font-semibold text-primary-900">{{rank.name}}</div>
                   </div>
                 </div>
-                <div class="flex flex-col gap-1">
-                  <div>
-                  <img :src="rank.image" alt="">
-                  </div>
-                  <div class="text-xl font-semibold text-primary-900">{{rank.name}}</div>
-                </div>
-              </div>
-            </Link>
-            
+              </Link>
+              
+            </div>
           </div>
-        </div>
+        </Link>
+        
         <div class="w-full flex items-center gap-3">
           <div class="py-3 px-4 bg-primary-100 flex flex-col gap-[10px] border border-primary-100 rounded-[5px] w-full">
             <div class="flex items-center justify-between">
