@@ -101,7 +101,7 @@ const cancelEdit = () => {
 }
 
 const submit = () => {
-    console.log('selectedImage.value', form.image)
+    // console.log('selectedImage.value', form.image)
     if (selectedImage.value) {
         const formData = new FormData();
         formData.append('image', selectedImage.value);

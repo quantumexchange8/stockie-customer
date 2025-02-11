@@ -53,7 +53,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
-            'ranking' => '0',
+            'ranking' => '1',
             'point' => '0',
             'first_login' => '0',
         ]);
@@ -93,7 +93,7 @@ class RegisteredUserController extends Controller
         if (!$uid) {
             return redirect()->route('profile.create');  // Handle cases where the user can't be found
         }
-        
+
         // Use the data as needed
         return Inertia::render('Auth/VerifyOtp', [
             'verificationCode' => $verificationCode,
