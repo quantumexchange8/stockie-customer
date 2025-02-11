@@ -10,7 +10,9 @@ import Label from "@/Components/Label.vue";
 import Input from "@/Components/Input.vue";
 import Button from "@/Components/Button.vue";
 import { LoginTopBg } from "@/Components/LoginIcon/Login";
-import { StockieIcon } from "@/Components/Icons/brands";
+import { StockieIcon, EyeIcon, EyeOffIcon } from "@/Components/Icons/brands";
+import InputIconWrapper from "@/Components/InputIconWrapper.vue";
+import { ref } from "vue";
 
 defineProps({
   canResetPassword: {
@@ -21,8 +23,14 @@ defineProps({
   },
 });
 
+const showPassword = ref(false);
+
+const togglePasswordVisibility = () => {
+    showPassword.value = !showPassword.value;
+};
+
 const form = useForm({
-  email: "",
+  phone: "",
   password: "",
   remember: false,
 });
@@ -73,32 +81,54 @@ const submit = () => {
               <div class="flex flex-col gap-2">
                 <div class="flex flex-col gap-6">
                   <div>
-                    <Label for="email" value="Email" />
+                    <Label for="phone" value="Phone No." />
 
-                    <Input
-                      id="email"
-                      type="email"
-                      :class="form.errors.email ? 'border border-primary-500 dark:border-error-500 mt-1 block w-full' : 'mt-1 block w-full'"
-                      v-model="form.email"
-                      autofocus
-                      autocomplete="username"
-                      placeholder="Enter your email here"
-                    />
+                    <InputIconWrapper>
 
-                    <InputError class="mt-2" :message="form.errors.email" />
+                      <template #icon>
+                        <span class="text-gray-700" >+60</span>
+                      </template>
+
+                      <Input
+                        id="phone"
+                        type="number"
+                        :class="form.errors.phone ? 'border border-primary-500 dark:border-error-500 mt-1 block w-full' : 'mt-1 block w-full'"
+                        v-model="form.phone"
+                        withIcon
+                        autofocus
+                        autocomplete="username"
+                        placeholder="Enter your phone here"
+                      />
+
+                    </InputIconWrapper>
+
+                    <InputError class="mt-2" :message="form.errors.phone" />
                   </div>
 
                   <div>
                     <InputLabel for="password" value="Password" />
 
-                    <Input
-                      id="password"
-                      type="password"
-                      :class="form.errors.email ? 'border border-primary-500 dark:border-error-500 mt-1 block w-full' : 'mt-1 block w-full'"
-                      v-model="form.password"
-                      autocomplete="current-password"
-                      placeholder="Enter your password here"
-                    />
+                    <div class="relative">
+                      <Input
+                        id="password"
+                        :type="showPassword ? 'text' : 'password'"
+                        :class="form.errors.password ? 'border border-primary-500 dark:border-error-500 mt-1 block w-full' : 'mt-1 block w-full'"
+                        v-model="form.password"
+                        autocomplete="current-password"
+                        placeholder="Enter your password here"
+                      />
+                      <div
+                          class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                          @click="togglePasswordVisibility"
+                      >
+                        <template v-if="showPassword">
+                            <EyeIcon aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                        </template>
+                        <template v-else>
+                            <EyeOffIcon aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                        </template>
+                      </div>
+                    </div>
 
                     <InputError class="mt-2" :message="form.errors.password" />
                   </div>
@@ -113,7 +143,6 @@ const submit = () => {
                   </label>
 
                   <Link
-                    v-if="canResetPassword"
                     :href="route('password.request')"
                     class="text-xs text-primary-900 font-medium"
                   >

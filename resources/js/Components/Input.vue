@@ -36,7 +36,7 @@ onMounted(() => {
       'text-base text-gray-700 placeholder:text-gray-200 placeholder:text-base',
       {
         'px-4': !withIcon,
-        'pl-11 pr-4': withIcon,
+        'pl-12 pr-4': withIcon,
       },
     ]"
     :value="modelValue"

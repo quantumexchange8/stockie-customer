@@ -21,7 +21,7 @@ class DashboardController extends Controller
         // Check if it's the user's first login
         if ($user->first_login == 0) {
             // Update first_login to 1 after the first login
-            $user->update(['first_login' => 1]);
+            // $user->update(['first_login' => 1]);
 
             // Redirect to the SelectProfile page
             return redirect()->route('profile.profile_image');

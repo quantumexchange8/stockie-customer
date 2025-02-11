@@ -139,7 +139,7 @@ const { formatDateTime } = transactionFormat();
                                             <div class="flex items-center justify-between">
                                                 <div class="flex gap-3 items-center">
                                                     <div class="w-10 h-10">
-                                                        <img :src="keepLog.order_item_subitem.product_item.product.product_image_url ? keepLog.order_item_subitem.product_item.product.product_image_url : '' " alt="product image" class="w-10 h-10 object-cover" >
+                                                        <img :src="keepLog.order_item_subitem.product_item.product.product_image_url ? keepLog.order_item_subitem.product_item.product.product_image_url : '' " alt="product image" class="w-10 h-10 object-contain" >
                                                     </div>
                                                     <div class="flex flex-col">
                                                         <div class="text-gray-900 text-xs font-medium">{{ keepLog.order_item_subitem.product_item.product.product_name }}</div>
@@ -186,7 +186,9 @@ const { formatDateTime } = transactionFormat();
 
                                             <div class="flex items-center justify-between">
                                                 <div class="flex gap-3 items-center">
-                                                    <div></div>
+                                                    <div>
+                                                        <img :src="keepLog.order_item_subitem.product_item.product.product_image_url ? keepLog.order_item_subitem.product_item.product.product_image_url : '' " alt="product image" class="w-10 h-10 object-contain" >
+                                                    </div>
                                                     <div class="flex flex-col">
                                                         <div class="text-gray-900 text-xs font-medium">{{ keepLog.order_item_subitem.product_item.product.product_name }}</div>
                                                         <div class="text-gray-400 text-xss font-medium">{{ formatDateTime(keepLog.created_at) }}</div>

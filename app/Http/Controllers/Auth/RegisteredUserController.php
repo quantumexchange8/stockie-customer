@@ -61,15 +61,16 @@ class RegisteredUserController extends Controller
         $storeOtp = VerifyOtp::create([
             'email' => $request->email,
             'otp' => $verificationCode,
-            'expired_at' => Carbon::now()->addMinutes(10),
+            'expired_at' => Carbon::now()->addMinutes(5),
         ]);
 
-        Mail::to($request->email)->send(new VerificationCodeMail($verificationCode));
+        Mail::to($request->email)->send(new VerificationCodeMail($verificationCode, $request->email));
 
-        Session::put('verification_code', $verificationCode);
-        Session::put('user_data', $request->only(['full_name', 'email', 'phone', 'password']));
+        session()->flash('verification_code', $verificationCode);
+        session()->flash('user_data', $request->only(['full_name', 'email', 'phone', 'password']));
 
-        return redirect(route('verifyOtp'));
+
+        return to_route('verifyOtp');
 
         // event(new Registered($user));
 
@@ -80,10 +81,19 @@ class RegisteredUserController extends Controller
 
     public function verifyOtp()
     {
-        $verificationCode = Session::get('verification_code');
-        $userData = Session::get('user_data');
+        $verificationCode = session('verification_code');
+        $userData = session('user_data');
+
+        if (!$userData) {
+            return redirect()->route('profile.create');  // Or wherever the user should be redirected if there's an issue
+        }
+
         $uid = Customer::where('email', $userData['email'])->first();
 
+        if (!$uid) {
+            return redirect()->route('profile.create');  // Handle cases where the user can't be found
+        }
+        
         // Use the data as needed
         return Inertia::render('Auth/VerifyOtp', [
             'verificationCode' => $verificationCode,
@@ -100,26 +110,29 @@ class RegisteredUserController extends Controller
 
         $check = VerifyOtp::where('email', $user->email)->orderBy('created_at', 'desc')->first();
         
-        if ($now > $check->expired_at) {
-
-            return redirect()->back()->withErrors('error', 'otp expired');
-        } 
+        if (!$check || $now > $check->expired_at) {
+            return redirect()->back()->withErrors(['otp' => 'OTP expired']);
+        }
         
-        
-
         if ($check->otp === $request->otp) {
             $user->email_verified_at = $now;
+            $user->status = 'verified';
+            $user->first_login = '0';
             $user->save();
-
-            return redirect(route('dashboard', absolute: false));
-
-            if ($user->first_login === '0') {
-
-                return redirect(route('profile.profile_image', absolute: false));
-            } else {
-                return redirect(route('dashboard', absolute: false));
-            }
+    
+            // 🔹 Login the user before redirecting
+            Auth::guard('web')->login($user);
+    
+            // 🔹 Remove OTP record to prevent reuse
+            $check->delete();
+    
+            // 🔹 Redirect to the correct page
+            return ($user->first_login === '0')
+                ? redirect(route('profile.profile_image'))
+                : redirect(route('dashboard'));
         }
+
+        return redirect()->back()->withErrors(['otp' => 'Invalid OTP']);
         
     }
 }

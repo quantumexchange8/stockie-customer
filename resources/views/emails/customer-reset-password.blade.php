@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Verification Code</title>
+    <title>Reset Your Password</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,20 +29,20 @@
             font-weight: bold;
             color: #333;
         }
-        .code {
-            font-size: 28px;
-            font-weight: bold;
-            color: #007BFF;
-            margin: 20px 0;
-            display: inline-block;
-            padding: 10px 20px;
-            border: 2px dashed #007BFF;
-            border-radius: 5px;
-        }
         .message {
             font-size: 16px;
             color: #555;
             margin: 10px 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #7E171B;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
         }
         .footer {
             font-size: 12px;
@@ -59,23 +59,23 @@
         <!-- Logo -->
         <img src="{{ asset('assets/image/stockie-logo.png') }}" alt="Company Logo" class="logo">
 
-
         <!-- Header -->
-        <div class="header">Your Verification Code</div>
+        <div class="header">Reset Your Password</div>
 
         <!-- Message -->
-        <p class="message">Dear <strong>{{ $email }}</strong>,</p>
-        <p class="message">Use the verification code below to complete your authentication process.</p>
+        <p class="message">Hello,</p>
+        <p class="message">You recently requested to reset your password for your CRM account.</p>
+        <p class="message">Click the button below to reset your password:</p>
 
-        <!-- Verification Code -->
-        <div class="code">{{ $verificationCode }}</div>
+        <!-- Reset Password Button -->
+        <a href="{{ $resetUrl }}" class="button">Reset Password</a>
 
-        <p class="message">This code will expire in <strong>5 minutes</strong>. Please do not share this code with anyone.</p>
+        <p class="message">If you did not request a password reset, please ignore this email.</p>
 
         <!-- Footer -->
         <div class="footer">
             &copy; {{ date('Y') }} Stockie. All rights reserved.
-            <br>Need help? <a href="mailto:support@stockie.com">Contact Support</a>
+            <br>Need help? <a href="mailto:support@yourwebsite.com">Contact Support</a>
         </div>
     </div>
 

@@ -8,9 +8,13 @@ import { CheckIcon, ChevronLeft } from '@/Components/Icons/solid';
 import Label from '@/Components/Label.vue';
 import Input from '@/Components/Input.vue';
 import Button from '@/Components/Button.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import Dropdown from 'primevue/dropdown';
 import Dialog from 'primevue/dialog';
+
+const props = defineProps({
+  profileImage: Object,
+})
 
 const edit = ref(false);
 const user = usePage().props.auth.user
@@ -32,11 +36,16 @@ onMounted(() => {
   fetchProfileImages();
 });
 
+const profileImageToShow = computed(() => {
+  return selectedImage.value ? URL.createObjectURL(selectedImage.value) : props.profileImage.profile;
+});
+
 const form = useForm({
     full_name: user.full_name,
     phone: user.phone,
     email: user.email,
-    password: ''
+    password: '',
+    image: null
 })
 
 const dial_code = ref([
@@ -65,10 +74,15 @@ const selectFile = async (image) => {
 
     selectedImage.value = file; // Store the file object
     form.image = file; // Update the form data
+    
   } catch (error) {
     console.error('Error converting image to file:', error);
   }
 };
+
+const confirmSelection = () => {
+    visible.value = false;
+}
 
 const editDetails = () => {
     edit.value = true;
@@ -83,10 +97,39 @@ const cancelEdit = () => {
         password: ''
     })
 
-    console.log(form.full_name)
-
     edit.value = false;
 }
+
+const submit = () => {
+    console.log('selectedImage.value', form.image)
+    if (selectedImage.value) {
+        const formData = new FormData();
+        formData.append('image', selectedImage.value);
+        form.post(route("profile.update-profile"), {
+            onFinish: () => form.reset({
+                full_name: user.full_name,
+                phone: user.phone,
+                email: user.email,
+                password: ''
+            }),
+        });
+    } else {
+        form.post(route("profile.update-profile"), {
+            onFinish: () => {
+                form.reset({
+                    full_name: user.full_name,
+                    phone: user.phone,
+                    email: user.email,
+                    password: ''
+                });
+            },
+            onSuccess: () => {
+                edit.value = false;
+            }
+        });
+    }
+  
+};
 
 </script>
 
@@ -114,7 +157,7 @@ const cancelEdit = () => {
                 <div v-if="edit === false" class=" w-full flex flex-col gap-16 " >
                     <div class="w-full flex justify-center">
                         <div class=" w-[140px] h-[140px] rounded-full">
-                            <img src="" alt="">
+                            <img :src="props.profileImage.profile" alt="profile">
                         </div>
                     </div>
                     <div class="flex flex-col gap-6" >
@@ -162,7 +205,7 @@ const cancelEdit = () => {
                 <form v-else class=" w-full" >
                     <div class="w-full flex justify-center">
                         <div class=" w-[140px] h-[140px] rounded-full" @click="openPosition('bottom')" >
-                            <img src="" alt="">
+                            <img :src="profileImageToShow" alt="profile" class="w-full h-full rounded-full">
                         </div>
                     </div>
                     <div class="flex flex-col gap-12" >
@@ -229,7 +272,8 @@ const cancelEdit = () => {
                             <Button 
                                 variant="primary"
                                 size="lg"
-                                type="submit"
+                                type="button"
+                                @click="submit"
                             >
                                 Save changes
                             </Button>
@@ -277,7 +321,7 @@ const cancelEdit = () => {
                         <Button size="lg" variant="secondary" class="w-full flex justify-center items-center" @click="closePosition">Close</Button>
                     </div>
                     <div class="w-full">
-                        <Button size="lg" variant="primary" class="w-full flex justify-center items-center">Confirm</Button>
+                        <Button size="lg" variant="primary" class="w-full flex justify-center items-center" @click="confirmSelection">Confirm</Button>
                     </div>
                 </div>
             </div>   

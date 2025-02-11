@@ -98,6 +98,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/getProfileImage', [ProfileController::class, 'getProfileImage'])->name('profile.getProfileImage');
     Route::post('/save-image', [ProfileController::class, 'saveimage'])->name('profile.save-image');
 
+    Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('profile.update-profile');
+
+    /**
+     * ==============================
+     *        Verify otp in auth
+     * ==============================
+     */
+    Route::get('/verify-otp', [ProfileController::class, 'verifyOtp'])->name('verify-otp');
+    Route::post('/validStoreOtp', [ProfileController::class, 'validStoreOtp'])->name('validStoreOtp');
+    
 });
 
 Route::get('/components/buttons', function () {
