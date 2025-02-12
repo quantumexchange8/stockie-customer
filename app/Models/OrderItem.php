@@ -13,7 +13,7 @@ use Spatie\Activitylog\LogOptions;
 
 class OrderItem extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, SoftDeletes;
     
     protected $table = "order_items";
 
@@ -33,10 +33,10 @@ class OrderItem extends Model
         'status',
     ];
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()->logAll();
-    }
+    // public function getActivitylogOptions(): LogOptions
+    // {
+    //     return LogOptions::defaults()->logAll();
+    // }
 
     /**
      * Order Model

@@ -25,8 +25,8 @@ class AppServiceProvider extends ServiceProvider
             resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme('https');
             $this->app['request']->server->set('HTTPS', true);
         }
-        else {
-            Mail::alwaysTo('developer@currenttech.pro');
-        }
+        // else {
+        //     Mail::alwaysTo('developer@currenttech.pro');
+        // }
     }
 }

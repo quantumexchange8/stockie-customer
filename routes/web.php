@@ -73,6 +73,8 @@ Route::middleware('auth')->group(function () {
      */
     Route::get('/order_listing', [OrderController::class, 'orderListing'])->name('order_listing');
     Route::get('/getOrderHistory', [OrderController::class, 'getOrderHistory'])->name('getOrderHistory');
+    Route::get('/getMerchant', [OrderController::class, 'getMerchant'])->name('getMerchant');
+    
 
     /**
      * ==============================

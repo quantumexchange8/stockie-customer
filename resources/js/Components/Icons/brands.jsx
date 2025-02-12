@@ -405,3 +405,32 @@ export const WarningIcon = defineComponent({
         )
     },
 })
+
+export const StockieSmallIcon = defineComponent({
+    setup() {
+        return () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <g filter="url(#filter0_i_8906_37064)">
+                    <path d="M0.703125 6.46479V1.09428C0.703125 0.876094 0.88 0.699219 1.09819 0.699219H9.90806C10.1262 0.699219 10.3031 0.876094 10.3031 1.09428V2.61922H2.81513V4.53924H10.3031V9.90416C10.3031 10.1223 10.1262 10.2992 9.90806 10.2992H1.09819C0.88 10.2992 0.703125 10.1223 0.703125 9.90416V8.37922H8.19112V6.46479H0.703125Z" fill="url(#paint0_linear_8906_37064)"/>
+                </g>
+                <defs>
+                    <filter id="filter0_i_8906_37064" x="0.703125" y="0.165885" width="9.60156" height="10.1329" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                    <feOffset dy="-0.533333"/>
+                    <feGaussianBlur stdDeviation="0.32"/>
+                    <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+                    <feColorMatrix type="matrix" values="0 0 0 0 0.106624 0 0 0 0 0.00671956 0 0 0 0 0.00671956 0 0 0 0.13 0"/>
+                    <feBlend mode="normal" in2="shape" result="effect1_innerShadow_8906_37064"/>
+                    </filter>
+                    <linearGradient id="paint0_linear_8906_37064" x1="0.222637" y1="-0.194223" x2="7.67781" y2="14.2512" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#7E171B"/>
+                    <stop offset="0.56" stop-color="#84090F"/>
+                    <stop offset="1" stop-color="#5E0A0E"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        )
+    },
+})

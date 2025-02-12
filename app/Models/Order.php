@@ -56,10 +56,10 @@ class Order extends Model
      * OrderItem Model
      * Get the items of the order.
      */
-    // public function orderItems(): HasMany
-    // {
-    //     return $this->hasMany(OrderItem::class, 'order_id', 'id');
-    // }
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class, 'order_id', 'id');
+    }
 
     
     // public function pointHistories(): HasMany
@@ -99,4 +99,9 @@ class Order extends Model
     // {
     //     return $this->belongsTo(RankingReward::class,'voucher_id');
     // }
+
+    public function orderTable(): HasMany
+    {
+        return $this->hasMany(OrderTable::class, 'order_id');
+    }
 }
