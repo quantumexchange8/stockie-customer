@@ -35,6 +35,7 @@ class Customer extends Authenticatable implements HasMedia, CanResetPasswordCont
         'uuid',
         'first_login',
         'status',
+        'dial_code',
     ];
 
     protected $hidden = [

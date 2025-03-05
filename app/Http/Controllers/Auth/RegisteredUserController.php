@@ -40,7 +40,21 @@ class RegisteredUserController extends Controller
         $request->validate([
             'full_name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.Customer::class,
-            'phone' => 'required|string|max:255|unique:'.Customer::class,
+            'phone' => [
+                'required', 
+                'numeric', 
+                'digits_between:9,10', // Malaysia phone numbers are typically 10-11 digits
+                'unique:customers,phone', // Ensures phone number is unique
+                function ($attribute, $value, $fail) {
+                    // Prefix '60' to the input value
+                    $phoneNumber = '60' . $value;
+                    
+                    // Check if the phone number starts with '601' and is followed by 7-8 digits
+                    if (!preg_match('/^601[0-9]{7,8}$/', $phoneNumber)) {
+                        $fail('The phone number must be a valid Malaysian phone number.');
+                    }
+                },
+            ],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -51,6 +65,7 @@ class RegisteredUserController extends Controller
             'full_name' => $request->full_name,
             'uuid' => RunningNumberService::getID('customer'),
             'email' => $request->email,
+            'dial_code' => '+60',
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
             'ranking' => '1',

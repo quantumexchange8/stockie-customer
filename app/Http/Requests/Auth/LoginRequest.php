@@ -57,6 +57,14 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        if (Auth::user()->status === 'void') {
+            // Log the user out and throw an error if the role is not 'admin'
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'phone' => 'Access denied. Please contact admin.',
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 
