@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\KeepController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PointController;
@@ -110,6 +111,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/verify-otp', [ProfileController::class, 'verifyOtp'])->name('verify-otp');
     Route::post('/validStoreOtp', [ProfileController::class, 'validStoreOtp'])->name('validStoreOtp');
     
+    Route::get('/getPayoutDetails', [GlobalController::class, 'getPayoutDetails'])->name('getPayoutDetails');
+
+    Route::get('/getTotalKeep', [GlobalController::class, 'getTotalKeep'])->name('getTotalKeep');
+
 });
 
 Route::get('/components/buttons', function () {

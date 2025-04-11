@@ -5,11 +5,14 @@ import { computed, onMounted, ref } from 'vue'
 import {transactionFormat} from "@/Composables/index"
 import Modal from '@/Components/Modal.vue';
 import { StockieSmallIcon } from '@/Components/Icons/brands';
+import QRCodeVue3 from "qrcode-vue3";
+import md5 from 'crypto-js/md5';
 
 const orderHistory = ref([]);
 const merchantDetails = ref();
 const showModal = ref(false);
 const selectedOrder = ref(null);
+const payout = ref();
 
 const fetchOrderHistory = async () => {
   try {
@@ -29,11 +32,26 @@ const fetchMerchant = async () => {
   }
 };
 
+const fetchPayoutDetails = async () => {
+  try {
+
+    const response = await axios.get('/getPayoutDetails');
+
+    payout.value = response.data;
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+};
+
 const { formatDateTime, formatAmount } = transactionFormat();
 
 onMounted(() => {
     fetchOrderHistory ();
     fetchMerchant();
+    fetchPayoutDetails();
 });
 
 const view = (order) => {
@@ -41,7 +59,9 @@ const view = (order) => {
     showModal.value = true;
 }
 
-console.log(selectedOrder.value)
+const generateECode = (receipt_no, merchant, secret) => {
+    return md5(`${receipt_no}${merchant}${secret}`).toString();
+}
 
 </script>
 
@@ -79,7 +99,10 @@ console.log(selectedOrder.value)
 
     <Modal :show="showModal" max-width="md" @close="showModal = false">
         <div class="flex flex-col gap-9 min-h-screen" >
-            <div class="flex flex-col gap-9 p-1">
+            <div class="flex flex-col gap-9 p-1 relative">
+                <div class="absolute top">
+                    
+                </div>
                 <!-- top -->
                 <div class='flex gap-1 min-h-[238px] w-full bg-primary-900 p-6 relative'>
                     <div class="flex flex-col gap-1 items-start w-2/3">
@@ -202,7 +225,27 @@ console.log(selectedOrder.value)
                         </div>
 
                         <!-- QR CODE -->
-                        <div></div>
+                        <div class="flex flex-col gap-2 items-center justify-center">
+                            <QRCodeVue3 
+                                :width="180"
+                                :height="180"
+                                :value="`${payout?.url}invoice?invoice_no=${selectedOrder.payment.receipt_no}&merchant_id=${payout?.merchant_id}&amount=${selectedOrder.payment.grand_total}&eCode=${generateECode(
+                                    selectedOrder.payment.receipt_no,
+                                    payout?.merchant_id,
+                                    payout?.api_key,
+                                )}`"
+                                :dotsOptions="{
+                                    type: 'square',
+                                    color: '#7e171b',
+                                }"
+                                :cornersSquareOptions="{ type: 'square', color: '#7e171b' }"
+                                :cornersDotOptions="{ type: undefined, color: '#7e171b' }"
+                            />
+
+                            <div class="text-primary-950 text-sm font-medium">
+                                Scan QR to request your e-Invoice
+                            </div>
+                        </div>
 
                         <div class="py-6 bg-primary-900 rounded-md flex flex-col gap-2">
                             <div class="text-primary-50 text-xl font-light">Thank you for your visit!</div>

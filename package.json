@@ -20,8 +20,10 @@
     },
     "dependencies": {
         "@headlessui/vue": "^1.7.22",
+        "crypto-js": "^4.2.0",
         "dayjs": "^1.11.13",
         "primevue": "^3.53.0",
+        "qrcode-vue3": "^1.7.1",
         "qrcode.vue": "^3.6.0"
     }
 }

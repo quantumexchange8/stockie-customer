@@ -10,6 +10,7 @@ import Promotion from "@/Pages/Dashboard/Promotion.vue"
 import Points from "@/Pages/Dashboard/Points.vue"
 import { LastVisit, QRPhone, TierRank } from "@/Components/Icons/solid";
 import { transactionFormat } from "@/Composables";
+import Keep from "./Dashboard/Keep.vue";
 
 const logoutModal = ref(false);
 
@@ -166,14 +167,7 @@ const { formatDate, formatTime  } = transactionFormat();
             <div
               class="py-3 px-4 bg-white flex flex-col gap-[10px] border border-primary-100 rounded-[5px] w-[100px] h-full"
             >
-              <div class="flex items-center justify-between gap-[10px]">
-                <div class="text-base font-semibold text-primary-900">Keep</div>
-                <div><ArrowRedIcon /></div>
-              </div>
-              <div class="text-primary-900 text-5xl font-semibold">
-                <!-- Temp hard code -->
-                12
-              </div>
+              <Keep />
             </div>
           </Link>
         </div>
