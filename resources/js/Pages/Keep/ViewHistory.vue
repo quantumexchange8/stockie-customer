@@ -142,7 +142,7 @@ const { formatDateTime } = transactionFormat();
                                                         <img :src="keepLog.order_item_subitem.product_item.product.product_image_url ? keepLog.order_item_subitem.product_item.product.product_image_url : '' " alt="product image" class="w-10 h-10 object-contain" >
                                                     </div>
                                                     <div class="flex flex-col">
-                                                        <div class="text-gray-900 text-xs font-medium">{{ keepLog.order_item_subitem.product_item.product.product_name }}</div>
+                                                        <div class="text-gray-900 text-xs font-medium">{{ keepLog.order_item_subitem.product_item.inventory_item.item_name }}</div>
                                                         <div class="text-gray-400 text-xss font-medium">{{ formatDateTime(keepLog.created_at) }}</div>
                                                     </div>
                                                 </div>

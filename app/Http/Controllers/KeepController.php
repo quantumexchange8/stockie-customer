@@ -18,7 +18,11 @@ class KeepController extends Controller
 
         $keeps = KeepItem::where('customer_id', $user->id)
                 ->where('status', 'keep')
-                ->with(['orderItemSubitem.productItem.product:id,product_name', 'waiter:id,name'])
+                ->with([
+                    'orderItemSubitem.productItem.product:id,product_name', 
+                    'waiter:id,name',
+                    'orderItemSubitem.productItem.inventoryItem:id,inventory_id,item_name'
+                ])
                 ->get();
 
         $keeps->each(function ($keep) {
@@ -52,7 +56,9 @@ class KeepController extends Controller
         $keeps = KeepItem::where('customer_id', $user->id)
                 ->with(['orderItemSubitem.productItem.product' => function ($query) {
                     $query->select('id', 'product_name')->with('media'); 
-                }, 'keepHistories:keep_item_id,qty,cm,keep_date,status,remark'])
+                }, 'keepHistories:keep_item_id,qty,cm,keep_date,status,remark',
+                    'orderItemSubitem.productItem.inventoryItem:id,inventory_id,item_name'
+                ])
                 ->get();
 
         $keeps->each(function ($keep) {

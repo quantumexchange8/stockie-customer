@@ -55,7 +55,7 @@ const { formatDateTime, formatDate } = transactionFormat();
                                     <div class="text-primary-800 text-xl font-bold" v-if="keep.cm > 0">
                                         {{ keep.cm }} cm
                                     </div>
-                                    <div class="text-gray-900 text-xs font-medium">{{ keep.order_item_subitem.product_item.product.product_name }}</div>
+                                    <div class="text-gray-900 text-xs font-medium">{{ keep.order_item_subitem.product_item.inventory_item.item_name }}</div>
                                 </div>
                                 <div class="w-10 h-10">
                                     <img :src="keep.order_item_subitem.product_item.product.product_image_url ? keep.order_item_subitem.product_item.product.product_image_url : '' " alt="product image" class="w-10 h-10 object-contain" >
