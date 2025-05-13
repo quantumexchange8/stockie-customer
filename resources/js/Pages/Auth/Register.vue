@@ -63,46 +63,6 @@ const submit = () => {
         <form @submit.prevent="submit">
           <div class="flex flex-col gap-11" >
             <div class="flex flex-col items-center gap-6">
-              <div class="space-y-1 w-full" >
-                <Label for="email" value="Email" />
-
-                <Input
-                  id="email"
-                  type="email"
-                  class="w-full"
-                  v-model="form.email"
-                  required
-                  autocomplete="username"
-                  placeholder="Enter your email here"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-              </div>
-
-              <div class="space-y-1 w-full">
-                <Label for="phone" value="Phone No." />
-
-                <InputIconWrapper> 
-
-                  <template #icon>
-                    <span class="text-gray-700" >+60</span>
-                  </template>
-
-                  <Input
-                    id="phone"
-                    type="text"
-                    class="w-full"
-                    v-model="form.phone"
-                    withIcon
-                    required
-                    autofocus
-                    autocomplete="phone"
-                  />
-                </InputIconWrapper>
-
-                <InputError class="mt-2" :message="form.errors.phone" />
-              </div>
-
               <div class="space-y-1 w-full">
                 <Label for="username" value="Username" />
 
@@ -118,6 +78,44 @@ const submit = () => {
                 />
 
                 <InputError class="mt-2" :message="form.errors.username" />
+              </div>
+              
+              <div class="space-y-1 w-full" >
+                <Label for="email" value="Email (Optional)" />
+
+                <Input
+                  id="email"
+                  type="email"
+                  class="w-full"
+                  v-model="form.email"
+                  autocomplete="username"
+                  placeholder="Enter your email here"
+                />
+
+                <InputError class="mt-2" :message="form.errors.email" />
+              </div>
+
+              <div class="space-y-1 w-full">
+                <Label for="phone" value="Phone No. (Optional)" />
+
+                <InputIconWrapper> 
+
+                  <template #icon>
+                    <span class="text-gray-700" >+60</span>
+                  </template>
+
+                  <Input
+                    id="phone"
+                    type="number"
+                    class="w-full"
+                    v-model="form.phone"
+                    withIcon
+                    autofocus
+                    autocomplete="phone"
+                  />
+                </InputIconWrapper>
+
+                <InputError class="mt-2" :message="form.errors.phone" />
               </div>
 
               <div class="space-y-1 w-full">

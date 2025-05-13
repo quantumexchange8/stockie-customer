@@ -179,7 +179,7 @@ const submit = () => {
                             <Label value="Email" />
                             
                             <div class="border-b border-b-gray-300 py-3 text-gray-700 text-base leading-tight" >
-                                {{ $page.props.auth.user.email }}
+                                {{ $page.props.auth.user.email ? $page.props.auth.user.email : '-' }}
                             </div>
                         </div>
                         <div>

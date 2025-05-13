@@ -30,7 +30,7 @@ const togglePasswordVisibility = () => {
 };
 
 const form = useForm({
-  username: "",
+  name: "",
   password: "",
   remember: false,
 });
@@ -81,7 +81,7 @@ const submit = () => {
               <div class="flex flex-col gap-2">
                 <div class="flex flex-col gap-6">
                   <div>
-                    <Label for="username" value="Username" />
+                    <Label for="name" value="Username" />
 
                     <!-- <InputIconWrapper>
 
@@ -103,13 +103,13 @@ const submit = () => {
                     </InputIconWrapper> -->
 
                     <Input 
-                      id="username"
+                      id="name"
                       type="text"
-                      :class="form.errors.username ? 'border border-primary-500 dark:border-error-500 mt-1 block w-full' : 'mt-1 block w-full'"
-                      v-model="form.username"
+                      :class="form.errors.name ? 'border border-primary-500 dark:border-error-500 mt-1 block w-full' : 'mt-1 block w-full'"
+                      v-model="form.name"
                     />
 
-                    <InputError class="mt-2" :message="form.errors.phone" />
+                    <InputError class="mt-2" :message="form.errors.name" />
                   </div>
 
                   <div>
@@ -149,12 +149,12 @@ const submit = () => {
                     >
                   </label>
 
-                  <Link
+                  <!-- <Link
                     :href="route('password.request')"
                     class="text-xs text-primary-900 font-medium"
                   >
                     Forgot password?
-                  </Link>
+                  </Link> -->
                 </div>
               </div>
 

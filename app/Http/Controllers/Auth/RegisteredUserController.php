@@ -39,17 +39,16 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'username' => 'required|string|max:255|unique:customers,name',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.Customer::class,
+            'email' => 'nullable|unique:'.Customer::class,
             'phone' => [
-                'required', 
-                'numeric', 
-                'digits_between:9,10', // Malaysia phone numbers are typically 10-11 digits
-                'unique:customers,phone', // Ensures phone number is unique
+                'nullable', // allow empty
+                'digits_between:9,10',
+                'unique:customers,phone',
                 function ($attribute, $value, $fail) {
-                    // Prefix '60' to the input value
+                    if (!$value) return; // skip check if empty
+
                     $phoneNumber = '60' . $value;
-                    
-                    // Check if the phone number starts with '601' and is followed by 7-8 digits
+
                     if (!preg_match('/^601[0-9]{8,9}$/', $phoneNumber)) {
                         $fail('The phone number must be a valid Malaysian phone number.');
                     }
@@ -65,34 +64,35 @@ class RegisteredUserController extends Controller
             'name' => $request->username,
             'full_name' => $request->username,
             'uuid' => RunningNumberService::getID('customer'),
-            'email' => $request->email,
+            'email' => $request->email ?? null,
             'dial_code' => '+60',
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
+            'phone' => $request->phone ?? null,
+            // 'password' => Hash::make($request->password),
+            'password' => Hash::make('Test1234.'),
             'ranking' => '1',
             'point' => '0',
             'first_login' => '0',
         ]);
 
-        $storeOtp = VerifyOtp::create([
-            'email' => $request->email,
-            'otp' => $verificationCode,
-            'expired_at' => Carbon::now()->addMinutes(5),
-        ]);
+        // $storeOtp = VerifyOtp::create([
+        //     'email' => $request->email,
+        //     'otp' => $verificationCode,
+        //     'expired_at' => Carbon::now()->addMinutes(5),
+        // ]);
 
-        Mail::to($request->email)->send(new VerificationCodeMail($verificationCode, $request->email));
+        // Mail::to($request->email)->send(new VerificationCodeMail($verificationCode, $request->email));
 
-        session()->flash('verification_code', $verificationCode);
-        session()->flash('user_data', $request->only(['username', 'email', 'phone', 'password']));
+        // session()->flash('verification_code', $verificationCode);
+        // session()->flash('user_data', $request->only(['username', 'email', 'phone', 'password']));
 
 
-        return to_route('verifyOtp');
+        // return to_route('verifyOtp');
 
-        // event(new Registered($user));
+        event(new Registered($user));
 
-        // Auth::login($user);
+        Auth::login($user);
 
-        // return redirect(route('dashboard', absolute: false));
+        return redirect(route('dashboard', absolute: false));
     }
 
     public function verifyOtp()

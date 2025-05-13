@@ -155,10 +155,10 @@ const { formatDate, formatTime  } = transactionFormat();
                   {{ $page.props.auth.user.full_name }}
                 </div>
                 <div class="text-xs font-semibold text-gray-900">
-                  {{ $page.props.auth.user.email }}
+                  {{ $page.props.auth.user.email ? $page.props.auth.user.email : '-' }}
                 </div>
                 <div class="text-xs font-semibold text-gray-900">
-                  {{ $page.props.auth.user.phone }}
+                  {{ $page.props.auth.user.phone ? $page.props.auth.user.phone : '-' }}
                 </div>
               </div>
             </div>

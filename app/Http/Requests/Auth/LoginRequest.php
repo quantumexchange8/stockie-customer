@@ -27,7 +27,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => ['required', 'string'],
+            'name' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -35,7 +35,7 @@ class LoginRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'phone' => 'Phone',
+            'name' => 'Name',
             'password' => 'Password',
         ];
     }
@@ -49,11 +49,11 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('phone', 'password'), $this->boolean('remember'))) {
+        if (! Auth::attempt($this->only('name', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'phone' => trans('auth.failed'),
+                'name' => trans('auth.failed'),
             ]);
         }
 
@@ -61,7 +61,7 @@ class LoginRequest extends FormRequest
             // Log the user out and throw an error if the role is not 'admin'
             Auth::logout();
             throw ValidationException::withMessages([
-                'phone' => 'Access denied. Please contact admin.',
+                'name' => 'Access denied. Please contact admin.',
             ]);
         }
 
@@ -84,7 +84,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'phone' => trans('auth.throttle', [
+            'name' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -96,6 +96,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('phone')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('name')).'|'.$this->ip());
     }
 }
