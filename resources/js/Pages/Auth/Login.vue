@@ -30,7 +30,7 @@ const togglePasswordVisibility = () => {
 };
 
 const form = useForm({
-  phone: "",
+  username: "",
   password: "",
   remember: false,
 });
@@ -81,9 +81,9 @@ const submit = () => {
               <div class="flex flex-col gap-2">
                 <div class="flex flex-col gap-6">
                   <div>
-                    <Label for="phone" value="Phone No." />
+                    <Label for="username" value="Username" />
 
-                    <InputIconWrapper>
+                    <!-- <InputIconWrapper>
 
                       <template #icon>
                         <span class="text-gray-700" >+60</span>
@@ -100,7 +100,14 @@ const submit = () => {
                         placeholder="Enter your phone here"
                       />
 
-                    </InputIconWrapper>
+                    </InputIconWrapper> -->
+
+                    <Input 
+                      id="username"
+                      type="text"
+                      :class="form.errors.username ? 'border border-primary-500 dark:border-error-500 mt-1 block w-full' : 'mt-1 block w-full'"
+                      v-model="form.username"
+                    />
 
                     <InputError class="mt-2" :message="form.errors.phone" />
                   </div>

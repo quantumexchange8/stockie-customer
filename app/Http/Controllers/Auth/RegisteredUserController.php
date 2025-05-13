@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'full_name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:customers,name',
             'email' => 'required|string|lowercase|email|max:255|unique:'.Customer::class,
             'phone' => [
                 'required', 
@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
                     $phoneNumber = '60' . $value;
                     
                     // Check if the phone number starts with '601' and is followed by 7-8 digits
-                    if (!preg_match('/^601[0-9]{7,8}$/', $phoneNumber)) {
+                    if (!preg_match('/^601[0-9]{8,9}$/', $phoneNumber)) {
                         $fail('The phone number must be a valid Malaysian phone number.');
                     }
                 },
@@ -62,7 +62,8 @@ class RegisteredUserController extends Controller
         $uuid = rand(1000, 9999);
 
         $user = Customer::create([
-            'full_name' => $request->full_name,
+            'name' => $request->username,
+            'full_name' => $request->username,
             'uuid' => RunningNumberService::getID('customer'),
             'email' => $request->email,
             'dial_code' => '+60',
@@ -82,7 +83,7 @@ class RegisteredUserController extends Controller
         Mail::to($request->email)->send(new VerificationCodeMail($verificationCode, $request->email));
 
         session()->flash('verification_code', $verificationCode);
-        session()->flash('user_data', $request->only(['full_name', 'email', 'phone', 'password']));
+        session()->flash('user_data', $request->only(['username', 'email', 'phone', 'password']));
 
 
         return to_route('verifyOtp');

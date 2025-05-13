@@ -23,7 +23,7 @@ const togglePasswordVisibilityConfirm = () => {
 }
 
 const form = useForm({
-  full_name: "",
+  username: "",
   email: "",
   phone: "",
   password: "",
@@ -104,20 +104,20 @@ const submit = () => {
               </div>
 
               <div class="space-y-1 w-full">
-                <Label for="full_name" value="Full Name" />
+                <Label for="username" value="Username" />
 
                 <Input
-                  id="full_name"
+                  id="username"
                   type="text"
                   class="w-full"
-                  v-model="form.full_name"
+                  v-model="form.username"
                   required
                   autofocus
-                  autocomplete="full_name"
+                  autocomplete="username"
                   placeholder="Enter your full name here"
                 />
 
-                <InputError class="mt-2" :message="form.errors.full_name" />
+                <InputError class="mt-2" :message="form.errors.username" />
               </div>
 
               <div class="space-y-1 w-full">

@@ -24,6 +24,7 @@ class Customer extends Authenticatable implements HasMedia, CanResetPasswordCont
     protected $table = 'customers';
 
     protected $fillable = [
+        'name',
         'full_name',
         'email',
         'phone',
