@@ -1,12 +1,15 @@
 <script setup>
-import { ChevronLeft } from '@/Components/Icons/solid';
+import { ChevronLeft, XIcon } from '@/Components/Icons/solid';
 import { Link } from '@inertiajs/vue3';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import { computed, onMounted, ref } from 'vue';
 import { transactionFormat } from '@/Composables';
+import Modal from '@/Components/Modal.vue';
 
 const keepHistory = ref([]);
 const selectedTab = ref('All');
+const showModal = ref(false);
+const selectedKeep = ref(null);
 
 const fetchKeepHistory = async () => {
   try {
@@ -28,7 +31,17 @@ onMounted(() => {
     fetchKeepHistory();
 });
 
-const { formatDateTime } = transactionFormat();
+const openKeepItemDetail = (keep) => {
+    showModal.value = true;
+    selectedKeep.value = keep;
+    console.log('clicked', selectedKeep)
+}
+const closeKeepItemDetail = () => {
+    showModal.value = false;
+    selectedKeep.value = null;
+}
+
+const { formatDateTime, formatDate, formatTime } = transactionFormat();
 
 </script>
 
@@ -129,7 +142,7 @@ const { formatDateTime } = transactionFormat();
                         >
                             <div class="p-1">
                                 <div v-for="keepLog in filteredKeepHistory" class="flex flex-col">
-                                    <div class="flex items-center justify-between py-2">
+                                    <div class="flex items-center justify-between py-2" @click="openKeepItemDetail(keepLog)">
                                         <div class="flex flex-col gap-2 w-full">
                                             <div class="flex">
                                                 <div v-if="keepLog.status === 'Keep'" class="max-w-[45px] text-xss text-primary-900 font-semibold py-1.5 px-2.5 bg-primary-50 border border-primary-50 rounded-md">Keep</div>
@@ -176,7 +189,7 @@ const { formatDateTime } = transactionFormat();
                         >
                             <div class="p-1">
                                 <div v-for="keepLog in filteredKeepHistory" class="flex flex-col">
-                                    <div class="flex items-center justify-between py-2">
+                                    <div class="flex items-center justify-between py-2" @click="openKeepItemDetail(keepLog)">
                                         <div class="flex flex-col gap-2 w-full">
                                             <div class="flex">
                                                 <div v-if="keepLog.status === 'Keep'" class="max-w-[45px] text-xss text-primary-900 font-semibold py-1.5 px-2.5 bg-primary-50 border border-primary-50 rounded-md">Keep</div>
@@ -214,7 +227,7 @@ const { formatDateTime } = transactionFormat();
                         >
                             <div class="p-1">
                                 <div v-for="keepLog in filteredKeepHistory" class="flex flex-col">
-                                    <div class="flex items-center justify-between py-2">
+                                    <div class="flex items-center justify-between py-2" @click="openKeepItemDetail(keepLog)">
                                         <div class="flex flex-col gap-2 w-full">
                                             <div class="flex">
                                                 <div v-if="keepLog.status === 'Keep'" class="max-w-[45px] text-xss text-primary-900 font-semibold py-1.5 px-2.5 bg-primary-50 border border-primary-50 rounded-md">Keep</div>
@@ -250,7 +263,7 @@ const { formatDateTime } = transactionFormat();
                         >
                             <div class="p-1">
                                 <div v-for="keepLog in filteredKeepHistory" class="flex flex-col">
-                                    <div class="flex items-center justify-between py-2">
+                                    <div class="flex items-center justify-between py-2" @click="openKeepItemDetail(keepLog)">
                                         <div class="flex flex-col gap-2 w-full">
                                             <div class="flex">
                                                 <div v-if="keepLog.status === 'Keep'" class="max-w-[45px] text-xss text-primary-900 font-semibold py-1.5 px-2.5 bg-primary-50 border border-primary-50 rounded-md">Keep</div>
@@ -283,5 +296,56 @@ const { formatDateTime } = transactionFormat();
             </div>
         </div>
     </div>
+
+    <Modal :show="showModal" max-width="md" @close="closeKeepItemDetail">
+        <div class="flex flex-col gap-6 w-80 p-6" >
+            <div class="flex justify-between items-center w-full">
+                <div class="text-xl font-medium text-primary-950">Detail</div>
+                <div @click="closeKeepItemDetail"><XIcon /></div>
+            </div>
+            <div class="flex flex-col gap-4">
+                <div class="flex flex-col items-start gap-2">
+                    <div class="text-gray-500 text-sm">Current status</div>
+                    <div class="flex">
+                        <div v-if="selectedKeep.status === 'Keep'" class="max-w-[45px] text-xss text-primary-900 font-semibold py-1.5 px-2.5 bg-primary-50 border border-primary-50 rounded-md">Keep</div>
+                        <div v-if="selectedKeep.status === 'Served'" class="max-w-[55px] text-xss text-green-700 font-semibold py-1.5 px-2.5 bg-green-50 border border-green-50 rounded-md">Served</div>
+                        <div v-if="selectedKeep.status === 'Returned'" class="max-w-[55px] text-xss text-green-700 font-semibold py-1.5 px-2.5 bg-green-50 border border-green-50 rounded-md">Returned</div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-start gap-2">
+                    <div class="text-gray-500 text-sm">Kept item</div>
+                    <div class="text-gray-950 font-semibold text-sm">{{ selectedKeep.order_item_subitem.product_item.product.product_name}}</div>
+                </div>
+                <div class="flex flex-col items-start gap-2">
+                    <div class="text-gray-500 text-sm">Quantity/cm</div>
+                    <div class="text-gray-950 font-semibold text-sm">
+                        <span v-if="selectedKeep.qty">{{ selectedKeep.qty }} qty</span>
+                        <span v-else>{{ selectedKeep.cm }} cm</span>
+                    </div>
+                </div>
+                <div class="flex flex-col items-start gap-2">
+                    <div class="text-gray-500 text-sm">Expire on</div>
+                    <div class="text-gray-950 font-semibold text-sm">{{ formatDate(selectedKeep.expired_to)}}</div>
+                </div>
+                <div class="flex flex-col items-start gap-2">
+                    <div class="text-gray-500 text-sm">Remark</div>
+                    <div class="text-gray-950 font-semibold text-sm">{{ selectedKeep.remark ? selectedKeep.remark : '-' }}</div>
+                </div>
+            </div>
+            <div class="p-2 flex flex-col items-start gap-1 bg-gray-50">
+                <div class="text-black text-sm font-semibold">
+                    {{ selectedKeep.kept_from_table }}, at {{ formatDate(selectedKeep.updated_at) }}, {{ formatTime(selectedKeep.updated_at) }}
+                </div>
+                <div class="text-gray-700 text-xs flex items-center gap-1">
+                    <div>Kept by: </div>
+                    <div>{{ selectedKeep.waiter.name }}</div>
+                    <div class="max-w-3 max-h-3 rounded-full">
+                        <img :src="selectedKeep.waiter.profile_image ? selectedKeep.waiter.profile_image : null" alt="">
+                    </div>
+                     
+                </div>
+            </div>
+        </div>
+    </Modal>
 
 </template>

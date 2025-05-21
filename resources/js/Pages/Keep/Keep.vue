@@ -44,7 +44,7 @@ const { formatDateTime, formatDate } = transactionFormat();
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-3 max-h-[70vh] overflow-y-auto">
                     <div v-for="(keep, index) in keeps" :key="index">
                         <div class="flex flex-col gap-3 p-4 border bg-white border-gray-100">
                             <div class="flex justify-between">
@@ -63,6 +63,10 @@ const { formatDateTime, formatDate } = transactionFormat();
                             </div>
 
                             <div class="flex flex-col">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-16 text-gray-500 text-xs ">Kept from</div>
+                                    <div class="text-xs text-gray-950">{{ keep.kept_from_table ? keep.kept_from_table : '-' }}</div>
+                                </div>
                                 <div class="flex items-center gap-3">
                                     <div class="w-16 text-gray-500 text-xs ">Expired on</div>
                                     <div class="text-xs text-gray-950">{{ formatDate(keep.expired_to) }}</div>

@@ -57,7 +57,8 @@ class KeepController extends Controller
                 ->with(['orderItemSubitem.productItem.product' => function ($query) {
                     $query->select('id', 'product_name')->with('media'); 
                 }, 'keepHistories:keep_item_id,qty,cm,keep_date,status,remark',
-                    'orderItemSubitem.productItem.inventoryItem:id,inventory_id,item_name'
+                   'orderItemSubitem.productItem.inventoryItem:id,inventory_id,item_name',
+                   'waiter:id,name'
                 ])
                 ->get();
 
@@ -65,6 +66,11 @@ class KeepController extends Controller
             $product = $keep->orderItemSubitem->productItem->product;
             if ($product) {
                 $product->product_image_url = $product->getFirstMediaUrl('product');
+            }
+
+            $userProfile = $keep->waiter;
+            if ($userProfile) {
+                $userProfile->profile_image = $userProfile->getFirstMediaUrl('user');
             }
         });
 
