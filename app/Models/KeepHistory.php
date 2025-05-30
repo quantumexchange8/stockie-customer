@@ -39,4 +39,9 @@ class KeepHistory extends Model
     {
         return $this->belongsTo(OrderItem::class, 'order_item_id');
     }
+
+    public function waiter(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

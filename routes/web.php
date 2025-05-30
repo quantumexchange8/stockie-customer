@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/getRedemItem', [PointController::class, 'getRedemItem'])->name('point.getRedemItem');
         Route::get('/view-history', [PointController::class, 'viewHistory'])->name('point.view-history');
         Route::get('/getPointHistory', [PointController::class, 'getPointHistory'])->name('point.getPointHistory');
+        Route::get('/getExpiringPoint', [PointController::class, 'getExpiringPoint'])->name('point.getExpiringPoint');
     });
 
     /**

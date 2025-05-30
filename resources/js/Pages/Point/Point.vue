@@ -9,6 +9,8 @@ const props = defineProps({
 })
 
 const redeemItem = ref([]);
+const expiringPoint = ref([]);
+const totalPoint = ref([]);
 
 const fetchRedeemItem = async () => {
   try {
@@ -19,10 +21,24 @@ const fetchRedeemItem = async () => {
   }
 };
 
-const { formatAmountWithoutDecimals } = transactionFormat();
+const fetchExpiringPoint = async () => {
+  try {
+    const response = await fetch('/point/getExpiringPoint');
+    const result = await response.json();
+
+    expiringPoint.value = result.expiringPoints;
+    totalPoint.value = result.total_point;
+
+  } catch (error) {
+    console.error('Error fetching item:', error);
+  }
+};
+
+const { formatAmountWithoutDecimals, formatDate2 } = transactionFormat();
 
 onMounted(() => {
     fetchRedeemItem();
+    fetchExpiringPoint();
 });
 
 
@@ -54,6 +70,14 @@ onMounted(() => {
             <div
                 class="w-full rounded-[5px] flex flex-col gap-3 min-h-[80vh] p-4"
             >
+                <div v-if="expiringPoint.length > 0 " class="p-3 bg-[#FDFBED] rounded-[5px] flex flex-col gap-1">
+                    <div class="text-[#A35F1A] text-sm font-bold">{{ totalPoint }} points expiring soon:</div>
+                    <div class="text-[#3E200A] text-xs ">
+                        <div v-for="(item, index) in expiringPoint" :key="index">
+                            <span class="font-bold">{{ item.expire_balance }} pts</span> on <span class="">{{ formatDate2(item.expired_at) }}</span>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <Link :href="route('point.view-history')">
                         <div class="flex justify-between items-center">

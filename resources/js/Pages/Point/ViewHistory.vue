@@ -1,5 +1,5 @@
 <script setup>
-import { ChevronLeft } from '@/Components/Icons/solid';
+import { ChevronLeft, EditIcon, PointExpiredIcon, SmallDotIcons } from '@/Components/Icons/solid';
 import { Head, Link } from '@inertiajs/vue3';
 import {transactionFormat} from "@/Composables/index"
 import { computed, onMounted, ref } from 'vue'
@@ -29,7 +29,7 @@ onMounted(() => {
     fetchPointHistory ();
 });
 
-const { formatAmountWithoutDecimals, formatDateTime } = transactionFormat();
+const { formatAmountWithoutDecimals, formatDateTime, formatDate, formatTime } = transactionFormat();
 
 </script>
 
@@ -109,7 +109,7 @@ const { formatAmountWithoutDecimals, formatDateTime } = transactionFormat();
                             v-slot="{ selected }"
                         >
                             <button
-                                @click="selectedTab = 'Adjustment'"
+                                @click="selectedTab = 'Adjusted'"
                                 :class="[
                                 'w-full py-3 text-sm font-medium',
                                 ' focus:outline-none ',
@@ -119,6 +119,23 @@ const { formatAmountWithoutDecimals, formatDateTime } = transactionFormat();
                                 ]"
                             >
                                 Adjusted
+                            </button>
+                        </Tab>
+                        <Tab
+                            as="template"
+                            v-slot="{ selected }"
+                        >
+                            <button
+                                @click="selectedTab = 'Expired'"
+                                :class="[
+                                'w-full py-3 text-sm font-medium',
+                                ' focus:outline-none ',
+                                selected
+                                    ? 'border-b border-primary-900 text-primary-900'
+                                    : 'text-gray-200 hover:bg-white/[0.12] hover:text-white',
+                                ]"
+                            >
+                                Expired
                             </button>
                         </Tab>
                     </TabList>
@@ -147,12 +164,19 @@ const { formatAmountWithoutDecimals, formatDateTime } = transactionFormat();
                                                 <div v-if="pointLog.type === 'Used'" class="text-gray-900 font-medium">
                                                     {{ pointLog.qty }} x {{ pointLog.product.product_name }}
                                                 </div>
+                                                <div v-if="pointLog.type === 'Adjusted'" class="text-gray-900 font-medium">Point Adjustment</div>
+                                                <div v-if="pointLog.type === 'Expired'" class="text-gray-900 font-medium">Point Expiration</div>
                                                 <div class="text-gray-400 text-xss">{{ formatDateTime(pointLog.created_at) }}</div>
                                             </div>
                                         </div>
                                         <div>
                                             <span v-if="pointLog.type === 'Earned'" class="text-green-700 font-semibold">+ {{ pointLog.amount }} pts</span>
                                             <span v-if="pointLog.type === 'Used'" class="text-primary-700 font-semibold">- {{ pointLog.amount }} pts</span>
+
+                                            <span v-if="pointLog.type === 'Adjusted' && pointLog.new_balance > pointLog.old_balance" class="text-green-700 font-semibold">+ {{ pointLog.amount }} pts</span>
+                                            <span v-if="pointLog.type === 'Adjusted' && pointLog.old_balance > pointLog.new_balance" class="text-primary-700 font-semibold">- {{ pointLog.amount }} pts</span>
+
+                                            <span v-if="pointLog.type === 'Expired'" class="text-gray-500 font-semibold">{{ pointLog.amount }} pts</span>
                                         </div>
                                     </div>
                                 </div>
@@ -235,26 +259,51 @@ const { formatAmountWithoutDecimals, formatDateTime } = transactionFormat();
                             <div class="p-1">
                                 <div v-for="pointLog in filteredPointHistory" class="flex flex-col">
                                     <div class="flex items-center justify-between py-2">
-                                        <div>
-                                            <div>
-                                                <!-- <div v-if="pointLog.type === 'Earned'">
-                                                
-                                                </div>
-                                                <div v-if="pointLog.type === 'Used'"></div> -->
+                                        <div class="flex items-center gap-3">
+                                            <div class="border border-primary-200 rounded-sm bg-primary-50 flex justify-center items-center w-10 h-10">
+                                               <EditIcon />
                                             </div>
-                                            <div class="flex flex-col ">
-                                                <div v-if="pointLog.type === 'Earned'" class="text-gray-900 font-medium">
-                                                    Order #{{ pointLog.payment.order.order_no }}
+                                            <div class="flex flex-col gap-1">
+                                                <div class="text-gray-900 text-xs font-medium">Point Adjustment</div>
+                                                <div class="text-gray-400 text-xss flex items-center gap-1">
+                                                    <span>{{ formatDate(pointLog.created_at) }}</span>
+                                                    <span><SmallDotIcons /></span>
+                                                    <span>{{ formatTime(pointLog.created_at) }}</span>
                                                 </div>
-                                                <div v-if="pointLog.type === 'Used'" class="text-gray-900 font-medium">
-                                                    {{ pointLog.qty }} x {{ pointLog.product.product_name }}
-                                                </div>
-                                                <div class="text-gray-400 text-xss">{{ formatDateTime(pointLog.created_at) }}</div>
                                             </div>
                                         </div>
                                         <div>
-                                            <span v-if="pointLog.type === 'Earned'" class="text-green-700 font-semibold">+ {{ pointLog.amount }} pts</span>
-                                            <span v-if="pointLog.type === 'Used'" class="text-primary-700 font-semibold">- {{ pointLog.amount }} pts</span>
+                                            <span v-if="pointLog.type === 'Adjusted' && pointLog.new_balance > pointLog.old_balance" class="text-green-700 font-semibold">+ {{ pointLog.amount }} pts</span>
+                                            <span v-if="pointLog.type === 'Adjusted' && pointLog.old_balance > pointLog.new_balance" class="text-primary-700 font-semibold">- {{ pointLog.amount }} pts</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </TabPanel>
+                        <TabPanel
+                            :class="[
+                                'rounded-xl bg-white p-3',
+                                'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                            ]"
+                        >
+                            <div class="p-1">
+                                <div v-for="pointLog in filteredPointHistory" class="flex flex-col">
+                                    <div class="flex items-center justify-between py-2">
+                                        <div class="flex items-center gap-3">
+                                            <div class="border border-primary-200 rounded-sm bg-primary-50 flex justify-center items-center w-10 h-10">
+                                               <PointExpiredIcon />
+                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <div class="text-gray-900 text-xs font-medium">Point Expiration</div>
+                                                <div class="text-gray-400 text-xss flex items-center gap-1">
+                                                    <span>{{ formatDate(pointLog.created_at) }}</span>
+                                                    <span><SmallDotIcons /></span>
+                                                    <span>{{ formatTime(pointLog.created_at) }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <span v-if="pointLog.type === 'Expired'" class="text-gray-500 font-semibold">{{ pointLog.amount }} pts</span>
                                         </div>
                                     </div>
                                 </div>

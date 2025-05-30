@@ -80,6 +80,15 @@ export function transactionFormat() {
         return formattedDate.split('-').join('/');
     }
 
+    function formatDate2(date) {
+        return new Date(date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'Asia/Kuala_Lumpur'
+        });
+    }
+
     function formatTime(date) {
         const options = {
             hour12: false, // Disable AM/PM indicator
@@ -128,6 +137,7 @@ export function transactionFormat() {
         formatDateTime,
         getChannelName,
         formatDate,
+        formatDate2,
         getStatusClass,
         formatAmount,
         formatType,

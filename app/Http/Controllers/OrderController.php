@@ -30,6 +30,7 @@ class OrderController extends Controller
                     'payment:order_id,receipt_end_date,total_amount,grand_total,sst_amount,service_tax_amount,point_earned,discount_id',
                     'customer:id,point'
                     ])
+            ->latest()
             ->get();
 
         // dd($order);

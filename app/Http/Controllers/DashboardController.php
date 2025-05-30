@@ -33,7 +33,7 @@ class DashboardController extends Controller
         $rank->image = $rank->getFirstMediaUrl('ranking');
         $profileImage = Customer::find($user->id);
 
-        $lastOrder = Order::where('customer_id', $user->id)->latest()->first();
+        $lastOrder = Order::where('customer_id', $user->id)->where('status', 'Order Completed')->latest()->first();
 
         $profileImage->profile = $profileImage->getFirstMediaUrl('customer');
 

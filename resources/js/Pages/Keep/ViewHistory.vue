@@ -24,6 +24,9 @@ const filteredKeepHistory = computed(() => {
   if (selectedTab.value === 'All') {
     return keepHistory.value;
   }
+  if (selectedTab.value === 'Returned' || selectedTab.value === 'Served') {
+    return keepHistory.value.filter((keepLog) => keepLog.status === 'Returned' || keepLog.status === 'Served' );
+  }
   return keepHistory.value.filter((keepLog) => keepLog.status === selectedTab.value);
 });
 
@@ -34,7 +37,6 @@ onMounted(() => {
 const openKeepItemDetail = (keep) => {
     showModal.value = true;
     selectedKeep.value = keep;
-    console.log('clicked', selectedKeep)
 }
 const closeKeepItemDetail = () => {
     showModal.value = false;
@@ -237,7 +239,9 @@ const { formatDateTime, formatDate, formatTime } = transactionFormat();
 
                                             <div class="flex items-center justify-between">
                                                 <div class="flex gap-3 items-center">
-                                                    <div></div>
+                                                    <div>
+                                                        <img :src="keepLog.order_item_subitem.product_item.product.product_image_url ? keepLog.order_item_subitem.product_item.product.product_image_url : '' " alt="product image" class="w-10 h-10 object-contain" >
+                                                    </div>
                                                     <div class="flex flex-col">
                                                         <div class="text-gray-900 text-xs font-medium">{{ keepLog.order_item_subitem.product_item.product.product_name }}</div>
                                                         <div class="text-gray-400 text-xss font-medium">{{ formatDateTime(keepLog.created_at) }}</div>
@@ -273,7 +277,9 @@ const { formatDateTime, formatDate, formatTime } = transactionFormat();
 
                                             <div class="flex items-center justify-between">
                                                 <div class="flex gap-3 items-center">
-                                                    <div></div>
+                                                    <div>
+                                                        <img :src="keepLog.order_item_subitem.product_item.product.product_image_url ? keepLog.order_item_subitem.product_item.product.product_image_url : '' " alt="product image" class="w-10 h-10 object-contain" >
+                                                    </div>
                                                     <div class="flex flex-col">
                                                         <div class="text-gray-900 text-xs font-medium">{{ keepLog.order_item_subitem.product_item.product.product_name }}</div>
                                                         <div class="text-gray-400 text-xss font-medium">{{ formatDateTime(keepLog.created_at) }}</div>
@@ -342,7 +348,21 @@ const { formatDateTime, formatDate, formatTime } = transactionFormat();
                     <div class="max-w-3 max-h-3 rounded-full">
                         <img :src="selectedKeep.waiter.profile_image ? selectedKeep.waiter.profile_image : null" alt="">
                     </div>
-                     
+                </div>
+                <!-- Served -->
+                <div v-if="selectedKeep.keep_histories.length > 0" class="text-black text-sm font-semibold">
+                    <div v-for="kept_history in selectedKeep.keep_histories" class="flex flex-col gap-1">
+                        <div>
+                            {{ kept_history.redeemed_to_table }}, at {{ formatDate(kept_history.keep_date) }}, {{ formatTime(kept_history.keep_date) }}
+                        </div>
+                        <div class="text-gray-700 text-xs flex items-center gap-1">
+                            <div>Served by: </div>
+                            <div>{{ kept_history.waiter.name }}</div>
+                            <div class="max-w-3 max-h-3 rounded-full">
+                                <img :src="kept_history.waiter.profile_image ? kept_history.waiter.profile_image : null" alt="">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
