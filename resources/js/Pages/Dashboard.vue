@@ -165,7 +165,7 @@ const { formatDate, formatTime  } = transactionFormat();
           </Link>
           <Link :href="route('keep_listing')" class="w-1/3 h-full">
             <div
-              class="py-3 px-4 bg-white flex flex-col gap-[10px] border border-primary-100 rounded-[5px] w-[100px] h-full"
+              class="py-3 px-4 bg-white flex flex-col gap-[10px] border border-primary-100 rounded-[5px] w-full h-full"
             >
               <Keep />
             </div>
@@ -219,7 +219,7 @@ const { formatDate, formatTime  } = transactionFormat();
   </div>
 
   <Modal :show="logoutModal" max-width="sm" @close="closeModal">
-    <div class="flex flex-col gap-9 pt-6" >
+    <div class="flex flex-col gap-9 pt-6 items-center" >
       <LogoutPic />
       <div class="flex flex-col gap-9 px-6 pb-6 w-[283px]">
         <div class="flex flex-col items-center">

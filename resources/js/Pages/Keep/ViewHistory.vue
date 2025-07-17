@@ -5,6 +5,7 @@ import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import { computed, onMounted, ref } from 'vue';
 import { transactionFormat } from '@/Composables';
 import Modal from '@/Components/Modal.vue';
+import { NoDataFound } from '@/Components/Icons/nodata';
 
 const keepHistory = ref([]);
 const selectedTab = ref('All');
@@ -142,7 +143,7 @@ const { formatDateTime, formatDate, formatTime } = transactionFormat();
                                 'ring-white/60 ring-offset-0 focus:outline-none focus:ring-2',
                             ]"
                         >
-                            <div class="p-1">
+                            <div v-if="filteredKeepHistory.length > 0" class="p-1">
                                 <div v-for="keepLog in filteredKeepHistory" class="flex flex-col">
                                     <div class="flex items-center justify-between py-2" @click="openKeepItemDetail(keepLog)">
                                         <div class="flex flex-col gap-2 w-full">
@@ -182,6 +183,12 @@ const { formatDateTime, formatDate, formatTime } = transactionFormat();
                                     </div>
                                 </div>
                             </div>
+                            <div v-else class="w-full flex flex-col gap-5 justify-center items-center min-h-[60vh]">
+                                <NoDataFound />
+                                <div class="text-primary-900 text-sm font-medium">
+                                    No data can be shown yet... 
+                                </div>
+                            </div>
                         </TabPanel>
                         <TabPanel
                             :class="[
@@ -189,7 +196,7 @@ const { formatDateTime, formatDate, formatTime } = transactionFormat();
                                 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                             ]"
                         >
-                            <div class="p-1">
+                            <div v-if="filteredKeepHistory.length > 0" class="p-1">
                                 <div v-for="keepLog in filteredKeepHistory" class="flex flex-col">
                                     <div class="flex items-center justify-between py-2" @click="openKeepItemDetail(keepLog)">
                                         <div class="flex flex-col gap-2 w-full">
@@ -220,6 +227,12 @@ const { formatDateTime, formatDate, formatTime } = transactionFormat();
                                     </div>
                                 </div>
                             </div>
+                            <div v-else class="w-full flex flex-col gap-5 justify-center items-center min-h-[60vh]">
+                                <NoDataFound />
+                                <div class="text-primary-900 text-sm font-medium">
+                                    No data can be shown yet... 
+                                </div>
+                            </div>
                         </TabPanel>
                         <TabPanel
                             :class="[
@@ -227,7 +240,7 @@ const { formatDateTime, formatDate, formatTime } = transactionFormat();
                                 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                             ]"
                         >
-                            <div class="p-1">
+                            <div v-if="filteredKeepHistory.length > 0" class="p-1">
                                 <div v-for="keepLog in filteredKeepHistory" class="flex flex-col">
                                     <div class="flex items-center justify-between py-2" @click="openKeepItemDetail(keepLog)">
                                         <div class="flex flex-col gap-2 w-full">
@@ -258,6 +271,12 @@ const { formatDateTime, formatDate, formatTime } = transactionFormat();
                                     </div>
                                 </div>
                             </div>
+                            <div v-else class="w-full flex flex-col gap-5 justify-center items-center min-h-[60vh]">
+                                <NoDataFound />
+                                <div class="text-primary-900 text-sm font-medium">
+                                    No data can be shown yet... 
+                                </div>
+                            </div>
                         </TabPanel>
                         <TabPanel
                             :class="[
@@ -265,7 +284,7 @@ const { formatDateTime, formatDate, formatTime } = transactionFormat();
                                 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                             ]"
                         >
-                            <div class="p-1">
+                            <div v-if="filteredKeepHistory.length > 0" class="p-1">
                                 <div v-for="keepLog in filteredKeepHistory" class="flex flex-col">
                                     <div class="flex items-center justify-between py-2" @click="openKeepItemDetail(keepLog)">
                                         <div class="flex flex-col gap-2 w-full">
@@ -294,6 +313,12 @@ const { formatDateTime, formatDate, formatTime } = transactionFormat();
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div v-else class="w-full flex flex-col gap-5 justify-center items-center min-h-[60vh]">
+                                <NoDataFound />
+                                <div class="text-primary-900 text-sm font-medium">
+                                    No data can be shown yet... 
                                 </div>
                             </div>
                         </TabPanel>

@@ -4,7 +4,7 @@ import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import { Head, Link, useForm, usePage, } from '@inertiajs/vue3';
-import { CheckIcon, ChevronLeft } from '@/Components/Icons/solid';
+import { CheckIcon, ChevronLeft, EditProfileIcon } from '@/Components/Icons/solid';
 import Label from '@/Components/Label.vue';
 import Input from '@/Components/Input.vue';
 import Button from '@/Components/Button.vue';
@@ -157,7 +157,7 @@ const submit = () => {
                 <div v-if="edit === false" class=" w-full flex flex-col gap-16 " >
                     <div class="w-full flex justify-center">
                         <div class=" w-[140px] h-[140px] rounded-full">
-                            <img :src="props.profileImage.profile" alt="profile">
+                            <img :src="props.profileImage.profile" alt="profile" class="w-full h-full rounded-full">
                         </div>
                     </div>
                     <div class="flex flex-col gap-6" >
@@ -204,8 +204,12 @@ const submit = () => {
 
                 <form v-else class=" w-full" >
                     <div class="w-full flex justify-center">
-                        <div class=" w-[140px] h-[140px] rounded-full" @click="openPosition('bottom')" >
+                        <div class=" w-[140px] h-[140px] rounded-full relative" @click="openPosition('bottom')" >
                             <img :src="profileImageToShow" alt="profile" class="w-full h-full rounded-full">
+
+                            <div class="absolute z-10 top-2 right-2 ">
+                                <EditProfileIcon />
+                            </div>
                         </div>
                     </div>
                     <div class="flex flex-col gap-12" >

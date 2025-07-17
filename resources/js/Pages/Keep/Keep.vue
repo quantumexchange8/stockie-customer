@@ -1,4 +1,5 @@
 <script setup>
+import { NoDataFound } from '@/Components/Icons/nodata';
 import { ChevronLeft, HistoryIcon } from '@/Components/Icons/solid';
 import { transactionFormat } from '@/Composables';
 import { Link } from '@inertiajs/vue3';
@@ -44,7 +45,7 @@ const { formatDateTime, formatDate } = transactionFormat();
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-3 max-h-[70vh] overflow-y-auto">
+                <div v-if="keeps.length > 0" class="flex flex-col gap-3 max-h-[70vh] overflow-y-auto">
                     <div v-for="(keep, index) in keeps" :key="index">
                         <div class="bg-white border border-gray-100 rounded-[5px] flex flex-col">
                             <div v-if="keep.expired_status === 'upcoming'" class="bg-[#FDFBED] flex flex-col gap-1 p-3">
@@ -87,6 +88,12 @@ const { formatDateTime, formatDate } = transactionFormat();
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div v-else class="w-full flex flex-col gap-5 justify-center items-center min-h-[60vh]">
+                    <NoDataFound />
+                    <div class="text-primary-900 text-sm font-medium">
+                        No data can be shown yet... 
                     </div>
                 </div>
             </div>

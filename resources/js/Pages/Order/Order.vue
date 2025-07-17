@@ -7,6 +7,7 @@ import Modal from '@/Components/Modal.vue';
 import { StockieSmallIcon } from '@/Components/Icons/brands';
 import QRCodeVue3 from "qrcode-vue3";
 import md5 from 'crypto-js/md5';
+import { NoDataFound } from '@/Components/Icons/nodata';
 
 const orderHistory = ref([]);
 const merchantDetails = ref();
@@ -80,7 +81,7 @@ const generateECode = (receipt_no, merchant, secret) => {
                 <div class="w-6"></div>
             </div>
 
-            <div class="p-4">
+            <div v-if="orderHistory.length > 0" class="p-4">
                 <div v-for="order in orderHistory" class="flex flex-col">
                     <div class="flex items-center justify-between py-2 border-b border-gray-100">
                         <div class="flex flex-col ">
@@ -92,6 +93,12 @@ const generateECode = (receipt_no, merchant, secret) => {
                             View pdf
                         </div>
                     </div>
+                </div>
+            </div>
+            <div v-else class="w-full flex flex-col gap-5 justify-center items-center min-h-[70vh]">
+                <NoDataFound />
+                <div class="text-primary-900 text-sm font-medium">
+                    No data can be shown yet... 
                 </div>
             </div>
         </div>
