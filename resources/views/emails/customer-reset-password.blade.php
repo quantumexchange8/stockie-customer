@@ -74,7 +74,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            &copy; {{ date('Y') }} Stockie. All rights reserved.
+            &copy; {{ date('Y') }} STOXPOS. All rights reserved.
             <br>Need help? <a href="mailto:support@yourwebsite.com">Contact Support</a>
         </div>
     </div>

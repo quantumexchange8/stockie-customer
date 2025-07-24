@@ -8,7 +8,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import PrimeVue from "primevue/config";
 // import preset from "../presets/primevue";
 
-const appName = import.meta.env.VITE_APP_NAME || 'Stockie-customer';
+const appName = import.meta.env.VITE_APP_NAME || 'STOXPOS-customer';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

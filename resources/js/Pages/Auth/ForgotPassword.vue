@@ -33,7 +33,7 @@ const submit = () => {
             </div>
             <div class="flex flex-col gap-2 px-5">
                 <div class="text-primary-900 text-xl font-bold">Enter your email</div>
-                <div class="text-gray-900 text-sm font-medium" >Fret-no! We’ll sent you a recovery email to reset your password for your Stockie account.</div>
+                <div class="text-gray-900 text-sm font-medium" >Fret-no! We’ll sent you a recovery email to reset your password for your STOXPOS account.</div>
             </div>
 
             <form @submit.prevent="submit" class="w-full px-5 flex flex-col gap-7">

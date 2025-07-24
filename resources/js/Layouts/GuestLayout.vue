@@ -8,7 +8,7 @@ import { StockieIcon } from "@/Components/Icons/brands";
 <template>
   <div class="flex items-center justify-center">
     <div
-      class="min-h-screen max-w-[450px] w-full flex flex-col items-center gap-32 p-2 bg-white"
+      class="min-h-screen max-w-[450px] w-full flex flex-col items-center gap-32 bg-white"
     >
       <slot />
     </div>

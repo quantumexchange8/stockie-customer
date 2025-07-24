@@ -261,7 +261,7 @@ const generateECode = (receipt_no, merchant, secret) => {
                                     <div class="bg-white">
                                         <StockieSmallIcon />
                                     </div>
-                                    <span>stockie</span>
+                                    <span>STOXPOS</span>
                                 </div>
                             </div>
                         </div>
