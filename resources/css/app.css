@@ -18,3 +18,54 @@
         --primary-950: #48070a;
     }
 }
+
+.p-progressbar {
+    border: 0 none;
+    height: 8px;
+    background: #48070A;
+    border-radius: 6px;
+}
+
+.p-progressbar {
+    position: relative;
+    overflow: hidden;
+}
+
+.p-progressbar .p-progressbar-value {
+    border: 0 none;
+    margin: 0;
+    background: linear-gradient(296deg, #C4831B 26.18%, #EBD45F 121.76%);
+}
+
+.p-progressbar-determinate .p-progressbar-value-animate {
+    transition: width 1s ease-in-out;
+}
+
+.p-progressbar-label {
+    color: transparent;
+}
+
+.p-tooltip .p-tooltip-text {
+  background: #27272A;
+  color: #FAFAFA;
+  padding: 4px 12px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 232px;
+  font-size: 10px;
+  text-align: center;
+  line-height: 16px;
+  font-family: 'DM Sans';
+}
+.p-tooltip.p-tooltip-right .p-tooltip-arrow {
+  border-right-color: #495057;
+}
+.p-tooltip.p-tooltip-left .p-tooltip-arrow {
+  border-left-color: #495057;
+}
+.p-tooltip.p-tooltip-top .p-tooltip-arrow {
+  border-top-color: #495057;
+}
+.p-tooltip.p-tooltip-bottom .p-tooltip-arrow {
+  border-bottom-color: #495057;
+}

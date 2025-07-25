@@ -17,8 +17,20 @@ class RankingController extends Controller
         $rank = Ranking::find($user->ranking);
         $rank->image = $rank->getFirstMediaUrl('ranking');
 
+        $nextRank = Ranking::where('id', '>', $rank->id)
+                   ->orderBy('id')
+                   ->first();
+
+        $nextSpending = $nextRank->min_amount - $user->total_spending;
+
+        $allRank = Ranking::get();
+
         return Inertia::render('Ranking/Ranking', [
-            'rank' => $rank
+            'user' => $user,
+            'rank' => $rank,
+            'nextRank' => $nextRank,
+            'nextSpending' => $nextSpending,
+            'allRank' => $allRank,
         ]);
     }
 

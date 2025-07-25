@@ -122,10 +122,9 @@ const { formatDate, formatTime  } = transactionFormat();
                     </div>
                   </div>
                   <div class="flex flex-col gap-1">
-                    <div>
-                    <img :src="rank.image" alt="">
+                    <div class="max-w-9 max-h-9">
+                      <img :src="rank.image" alt="">
                     </div>
-                    <div class="text-xl font-semibold text-primary-900">{{rank.name}}</div>
                   </div>
                 </div>
               </Link>
