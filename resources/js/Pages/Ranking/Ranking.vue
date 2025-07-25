@@ -33,7 +33,11 @@ const props = defineProps({
 })
 
 const progress = computed(() => {
-  if (!props.user || !props.nextRank) return 0;
+  if (!props.user) return 0;
+
+  // If user already at highest rank, progress is 100%
+  if (!props.nextRank) return 100;
+
   return Math.min((props.user.total_spending / props.nextRank.min_amount) * 100, 100);
 });
 
@@ -78,8 +82,11 @@ const closeModal = () => {
                         <div>
                             <ProgressBar :value="progress" ></ProgressBar>
                         </div>
-                        <div class="text-primary-100 text-xs">
+                        <div v-if="nextRank" class="text-primary-100 text-xs">
                             Spend <span class="font-semibold">RM {{ nextSpending }}</span> more to unlock {{ nextRank.name }} next year.
+                        </div>
+                        <div v-else class="text-primary-100 text-xs">
+                            Highest ranking reached!
                         </div>
                     </div>
                 </div>
@@ -125,7 +132,10 @@ const closeModal = () => {
                     <div>
                         <InfoIcon />
                     </div>
-                    <div class="text-blue-500 font-medium text-sm text-left">Your next tier will be <span class="font-bold">{{ nextRank.name }}</span> on 01/01/{{ nextYear }}.</div>
+                    <div v-if="nextRank" class="text-blue-500 font-medium text-sm text-left">Your next tier will be <span class="font-bold">{{ nextRank.name }}</span> on 01/01/{{ nextYear }}.</div>
+                    <div v-else class="text-blue-500 font-medium text-sm text-left">
+                        Highest ranking reached!
+                    </div>
                 </div>
                 <div class="bg-gray-50 w-full py-5 flex flex-col gap-2">
                     <div class="uppercase text-gray-300 font-bold text-xs">current spend</div>

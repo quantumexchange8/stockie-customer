@@ -21,7 +21,11 @@ class RankingController extends Controller
                    ->orderBy('id')
                    ->first();
 
-        $nextSpending = $nextRank->min_amount - $user->total_spending;
+        if ($nextRank) {
+            $nextSpending = $nextRank->min_amount - $user->total_spending;
+        } else {
+            $nextSpending = 0;
+        }
 
         $allRank = Ranking::get();
 
