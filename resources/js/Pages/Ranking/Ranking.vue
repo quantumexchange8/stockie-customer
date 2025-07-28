@@ -29,6 +29,7 @@ const props = defineProps({
     rank: Object,
     nextRank: Object,
     nextSpending: Number,
+    nextActualRank: Object,
     allRank: Array,
 })
 
@@ -132,7 +133,7 @@ const closeModal = () => {
                     <div>
                         <InfoIcon />
                     </div>
-                    <div v-if="nextRank" class="text-blue-500 font-medium text-sm text-left">Your next tier will be <span class="font-bold">{{ nextRank.name }}</span> on 01/01/{{ nextYear }}.</div>
+                    <div v-if="nextRank" class="text-blue-500 font-medium text-sm text-left">Your next tier will be <span class="font-bold">{{ nextActualRank.name }}</span> on 01/01/{{ nextYear }}.</div>
                     <div v-else class="text-blue-500 font-medium text-sm text-left">
                         Highest ranking reached!
                     </div>

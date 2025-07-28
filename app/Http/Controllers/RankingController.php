@@ -17,6 +17,10 @@ class RankingController extends Controller
         $rank = Ranking::find($user->ranking);
         $rank->image = $rank->getFirstMediaUrl('ranking');
 
+        $nextActualRank = Ranking::where('min_amount', '<=', $user->total_spending)
+            ->orderByDesc('min_amount')
+            ->first();
+
         $nextRank = Ranking::where('min_amount', '>', $user->total_spending)
             ->orderBy('min_amount')
             ->first();
@@ -30,6 +34,7 @@ class RankingController extends Controller
             'rank' => $rank,
             'nextRank' => $nextRank,
             'nextSpending' => $nextSpending,
+            'nextActualRank' => $nextActualRank,
             'allRank' => $allRank,
         ]);
     }
