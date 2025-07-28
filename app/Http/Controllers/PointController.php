@@ -72,7 +72,17 @@ class PointController extends Controller
         $expiringPoints = PointHistory::where('customer_id', $user->id)
             ->where('type', 'Earned')
             ->whereBetween('expired_at', [$now, $upcomingExpiration])
-            ->get();
+            ->get()
+            ->groupBy(function ($item) {
+                return \Carbon\Carbon::parse($item->expired_at)->toDateString(); // Group by date only
+            })
+            ->map(function ($group) {
+                return [
+                    'date' => $group->first()->expired_at,
+                    'total' => $group->sum('expire_balance'),
+                ];
+            })
+            ->values();
 
         $expiringTotal = PointHistory::where('customer_id', $user->id)
             ->where('type', 'Earned')
@@ -81,7 +91,7 @@ class PointController extends Controller
 
         return response()->json([
             'expiringPoints' => $expiringPoints,
-            'total_point' => $expiringTotal,
+            'total_point' => $expiringPoints->sum('total'),
         ]);
     }
 }

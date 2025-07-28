@@ -17,15 +17,11 @@ class RankingController extends Controller
         $rank = Ranking::find($user->ranking);
         $rank->image = $rank->getFirstMediaUrl('ranking');
 
-        $nextRank = Ranking::where('id', '>', $rank->id)
-                   ->orderBy('id')
-                   ->first();
+        $nextRank = Ranking::where('min_amount', '>', $user->total_spending)
+            ->orderBy('min_amount')
+            ->first();
 
-        if ($nextRank) {
-            $nextSpending = $nextRank->min_amount - $user->total_spending;
-        } else {
-            $nextSpending = 0;
-        }
+       $nextSpending = $nextRank ? $nextRank->min_amount - $user->total_spending : 0;
 
         $allRank = Ranking::get();
 

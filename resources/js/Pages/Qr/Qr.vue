@@ -6,6 +6,7 @@ import { ref } from "vue";
 
 const props = defineProps({
     uuid: String,
+    profileImage: Object,
 })
 
 const foreground = ref('#7e171b')
@@ -21,19 +22,23 @@ const foreground = ref('#7e171b')
             <!-- header -->
             <div class="w-full flex justify-between gap-4">
                 <div class="flex flex-col gap-5">
-                <div class="flex flex-col gap-1">
-                    <div class="text-xl text-white font-black">Welcome back 👋</div>
-                    <div class="text-xs font-semibold text-primary-200">
-                    {{ $page.props.auth.user.full_name }}
+                    <div class="flex flex-col gap-1">
+                        <div class="text-xl text-white font-black">Welcome back 👋</div>
+                        <div class="text-xs font-semibold text-primary-200">
+                        {{ $page.props.auth.user.full_name }}
+                        </div>
+                    </div>
+                    <div>
+                        <Link :href="route('dashboard')" class="flex gap-4 py-4">
+                            <LogoutIcon />
+                        </Link>
                     </div>
                 </div>
-                <div>
-                    <Link :href="route('dashboard')" class="flex gap-4 py-4">
-                        <LogoutIcon /> <span class="text-white">Back</span>
-                    </Link>
+                <div class="w-full max-w-40 flex justify-center relative" >
+                    <div class="absolute -bottom-3 -z-10">
+                        <img :src="props.profileImage.profile" alt="" >
+                    </div>
                 </div>
-                </div>
-                <div></div>
             </div>
 
             <!-- content -->

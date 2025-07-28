@@ -57,7 +57,7 @@ const closeModal = () => {
     <div class="flex justify-center w-full">
         <div class="max-w-md w-full flex flex-col min-h-screen bg-white">
             <!-- header -->
-            <div class="flex flex-col pt-4 bg-primary-900">
+            <div class="flex flex-col pt-4 bg-primary-900 sticky top-0">
                 <div class="px-4">
                     <Link :href="route('dashboard')">
                         <ChevronLeft class="text-white"/>
@@ -83,7 +83,7 @@ const closeModal = () => {
                             <ProgressBar :value="progress" ></ProgressBar>
                         </div>
                         <div v-if="nextRank" class="text-primary-100 text-xs">
-                            Spend <span class="font-semibold">RM {{ nextSpending }}</span> more to unlock {{ nextRank.name }} next year.
+                            Spend <span class="font-semibold">RM {{ formatAmount(nextSpending) }}</span> more to unlock {{ nextRank.name }} next year.
                         </div>
                         <div v-else class="text-primary-100 text-xs">
                             Highest ranking reached!
@@ -96,7 +96,7 @@ const closeModal = () => {
             <div
                 class="w-full rounded-[5px] flex flex-col gap-3 min-h-[80vh] p-4"
             >
-                <div class="text-primary-900 text-xl font-semibold">My Rewards</div>
+                <div class="text-primary-900 text-xl font-semibold sticky top-[200px] bg-white py-2">My Rewards</div>
 
                 <div v-if="ranking.length > 0" class="flex flex-col gap-3">
                     <div v-for="reward in ranking" >
